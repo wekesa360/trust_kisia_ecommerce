@@ -1,3 +1,5 @@
+from pyexpat import model
+from typing_extensions import Required
 import uuid
 from django.db import models
 from autoslug import AutoSlugField
@@ -131,6 +133,23 @@ class OrderItem(models.Model):
         db_table = 'order_items'
 
 
+class Customer(models.Model):
+    first_name = models.CharField(max_length=80, null=True, Required=True)
+    last_name = models.CharField(max_length=80, null=True, Required=True)
+    phone_number = PhoneNumberField()
+    email = models.EmailField(null=True, Required=True)
+    device = models.CharField(max_length=200, null=True, blank=True)
+
+    
+    def __str__(self) -> str:
+        full_name = f'{self.first_name}  {self.last_name}'
+        return full_name
+
+    class Meta:
+        db_table = 'customer_details'
+
+
+
 class Order(models.Model):
     STATUS_CHOICES = (
         ('Pending', 'Pending'),
@@ -143,10 +162,12 @@ class Order(models.Model):
     PAYMENT_CHOICES = (
         
     )
+    customer = models.ForeignKey(Customer, on_delete=models.CASCADE)
     products = models.ManyToManyField(OrderItem)
     payment = models.CharField()
     status = models.CharField(max_length=100, choices=STATUS_CHOICES, default='Pending', blank=True)
-    delivery_address = models.ForeignKey(DeliveryCharges, blank=False, unique=False, on_delete=models.CASCADE)
+    delivery_address = models.CharField(choices=DeliveryCharges, blank=False, unique=False, on_delete=models.CASCADE)
+    device = models.CharField(max_length=200, null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     order_id = models.UUIDField(default=uuid.uuid4, unique=True, db_index=True, editable=False)
     
