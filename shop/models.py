@@ -1,5 +1,4 @@
-from pyexpat import model
-from typing_extensions import Required
+from urllib.parse import MAX_CACHE_SIZE
 import uuid
 from django.db import models
 from autoslug import AutoSlugField
@@ -14,8 +13,8 @@ from phonenumber_field.modelfields import PhoneNumberField
 class Category(models.Model):
     category_name = models.CharField(max_length=200, unique=False, blank=False)
     sub_category = models.CharField(max_length=200, unique=True)
-    slug = AutoSlugField(populate_from=lambda instance: instance.category_name, 
-                         slugify=lambda value: value.replace(' ', '-'))
+    # slug = AutoSlugField(populate_from=lambda instance: instance.category_name, 
+                         # slugify=lambda value: value.replace(' ', '-'))
     
     def __str__(self) -> str:
         return self.sub_category
@@ -35,10 +34,10 @@ class Product(models.Model):
     category = models.ForeignKey(Category, blank=False, unique=False, on_delete=models.CASCADE)
     description = models.CharField(max_length=1000)
     price = models.DecimalField(decimal_places=2, max_digits=10)
-    discount = models.DecimalField()
+    discount = models.DecimalField(decimal_places=2, max_digits=10)
     tag = models.CharField(max_length=100, choices=TAGS_CHOICES, blank=True)
-    slug = AutoSlugField(populate_from=lambda instance: instance.name,
-                         slugify=lambda value: value.replace(' ', '-'))
+    # slug = AutoSlugField(populate_from=lambda instance: instance.name,
+                         # slugify=value.replace(' ', '-'))
     quantity = models.IntegerField()
     thumbnail = models.FileField(upload_to='product_images/', blank=False)
     created_at = models.DateTimeField(auto_now_add=True)
@@ -105,11 +104,31 @@ class DeliveryCharges(models.Model):
         db_table = 'shipping_charges'
 
 
+class Customer(models.Model):
+    first_name = models.CharField(max_length=80, null=True)
+    last_name = models.CharField(max_length=80, null=True)
+    phone_number = PhoneNumberField(null=True)
+    device = models.CharField(max_length=256)
+    email = models.EmailField(null=True)
+    delivery_address = models.CharField(max_length=80, blank=False, unique=False, null=True)
+    
+    def __str__(self) -> str:
+        full_name = f'{self.first_name}  {self.last_name}'
+        return full_name
+
+
+    class Meta:
+        db_table = 'customer_details'
+
+
+
+
 class OrderItem(models.Model):
     ordered = models.BooleanField()
     product = models.ForeignKey(Product, blank=False, unique=False, on_delete=models.CASCADE)
-    quantity = models.IntegerField()
-    created_at = models.DateTimeField(auto_now_add=True)
+    quantity = models.IntegerField(default=1)
+    customer = models.ForeignKey(Customer, blank=True, on_delete=models.CASCADE)
+    ordered_date = models.DateTimeField()
     updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
@@ -133,23 +152,6 @@ class OrderItem(models.Model):
         db_table = 'order_items'
 
 
-class Customer(models.Model):
-    first_name = models.CharField(max_length=80, null=True, Required=True)
-    last_name = models.CharField(max_length=80, null=True, Required=True)
-    phone_number = PhoneNumberField()
-    email = models.EmailField(null=True, Required=True)
-    device = models.CharField(max_length=200, null=True, blank=True)
-
-    
-    def __str__(self) -> str:
-        full_name = f'{self.first_name}  {self.last_name}'
-        return full_name
-
-    class Meta:
-        db_table = 'customer_details'
-
-
-
 class Order(models.Model):
     STATUS_CHOICES = (
         ('Pending', 'Pending'),
@@ -159,15 +161,10 @@ class Order(models.Model):
         ('Cancelled', 'Cancelled'),
     )
     
-    PAYMENT_CHOICES = (
-        
-    )
     customer = models.ForeignKey(Customer, on_delete=models.CASCADE)
     products = models.ManyToManyField(OrderItem)
-    payment = models.CharField()
+    ordered = models.BooleanField()
     status = models.CharField(max_length=100, choices=STATUS_CHOICES, default='Pending', blank=True)
-    delivery_address = models.CharField(choices=DeliveryCharges, blank=False, unique=False, on_delete=models.CASCADE)
-    device = models.CharField(max_length=200, null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     order_id = models.UUIDField(default=uuid.uuid4, unique=True, db_index=True, editable=False)
     
@@ -175,7 +172,7 @@ class Order(models.Model):
         total = 0
         for order_item in self.products.all():
             total += order_item.get_final_price() 
-        return total + self.delivery_address.fee
+        return total + self.customer.delivery_address.fee
 
     def __str__(self):
         return self.user.username
@@ -183,20 +180,5 @@ class Order(models.Model):
     class Meta:
         db_table = 'orders'
 
-
-class Customer(models.Model):
-    first_name = models.CharField(max_length=80)
-    last_name = models.CharField(max_length=80)
-    phone_number = PhoneNumberField()
-    email = models.EmailField()
-    order = models.ForeignKey(Order, on_delete=models.CASCADE)
-    
-    def __str__(self) -> str:
-        full_name = f'{self.first_name}  {self.last_name}'
-        return full_name
-
-
-    class Meta:
-        db_table = 'customer_details'
 
 
