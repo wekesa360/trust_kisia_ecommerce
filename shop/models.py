@@ -1,7 +1,8 @@
 from urllib.parse import MAX_CACHE_SIZE
 import uuid
 from django.db import models
-from autoslug import AutoSlugField
+# from autoslug import AutoSlugField
+from django.utils.text import slugify
 from PIL import Image
 from io import BytesIO
 from django.urls import reverse
@@ -32,19 +33,21 @@ class Product(models.Model):
     
     name = models.CharField(max_length=200)
     category = models.ForeignKey(Category, blank=False, unique=False, on_delete=models.CASCADE)
-    description = models.CharField(max_length=1000)
+    description = models.TextField(max_length=1000000)
     price = models.DecimalField(decimal_places=2, max_digits=10)
     discount = models.DecimalField(decimal_places=2, max_digits=10)
     tag = models.CharField(max_length=100, choices=TAGS_CHOICES, blank=True)
-    # slug = AutoSlugField(populate_from=lambda instance: instance.name,
-                         # slugify=value.replace(' ', '-'))
+    slug = models.SlugField(unique=True)
     quantity = models.IntegerField()
-    thumbnail = models.FileField(upload_to='product_images/', blank=False)
     created_at = models.DateTimeField(auto_now_add=True)
     product_uuid = models.UUIDField(default=uuid.uuid4, unique=True, db_index=True, editable=False)
     
     def __str__(self) -> str:
         return self.name
+    
+    def save(self, *args, **kwargs):
+        self.slug = slugify(self.name)
+        super(Product, self).save(*args, **kwargs)
     
     def get_absolute_url(self):
         return f'/{self.category.slug}/{self.slug}/'
@@ -54,6 +57,15 @@ class Product(models.Model):
             return 'http://127.0.0.1:8000' + self.thumbnail.url
         else:
             return ''
+    
+    def get_product_image_url(self):
+        print(ProductImage.objects.filter(product_id=self.pk).all()[1].image.url)
+        url = "..{}".format(ProductImage.objects.filter(product_id=self.pk).first().image.url)
+        return url
+    
+    def get_all_product_images(self):
+        images = ProductImage.objects.filter(product_id=self.pk).all()
+        return images
         
     def get_add_to_cart_url(self):
         return reverse('shop:add-to-cart', kwargs={'slug': self.slug})
@@ -79,7 +91,7 @@ class Product(models.Model):
 
 class ProductImage(models.Model):
     product = models.ForeignKey(Product, blank=False, unique=False, on_delete=models.CASCADE)
-    image = models.FileField(upload_to='product_image/', blank=True)
+    image = models.FileField(upload_to='product_images/', blank=True)
     
     def __str__(self) -> str:
         return self.product.name
@@ -128,7 +140,7 @@ class OrderItem(models.Model):
     product = models.ForeignKey(Product, blank=False, unique=False, on_delete=models.CASCADE)
     quantity = models.IntegerField(default=1)
     customer = models.ForeignKey(Customer, blank=True, on_delete=models.CASCADE)
-    ordered_date = models.DateTimeField()
+    created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
@@ -163,9 +175,9 @@ class Order(models.Model):
     
     customer = models.ForeignKey(Customer, on_delete=models.CASCADE)
     products = models.ManyToManyField(OrderItem)
-    ordered = models.BooleanField()
+    ordered = models.BooleanField(default=False)
     status = models.CharField(max_length=100, choices=STATUS_CHOICES, default='Pending', blank=True)
-    created_at = models.DateTimeField(auto_now_add=True)
+    ordered_date = models.DateTimeField()
     order_id = models.UUIDField(default=uuid.uuid4, unique=True, db_index=True, editable=False)
     
     def get_total_price(self):
@@ -175,7 +187,8 @@ class Order(models.Model):
         return total + self.customer.delivery_address.fee
 
     def __str__(self):
-        return self.user.username
+        username = f'{self.customer.first_name} {self.customer.last_name} complete order - {self.ordered}'
+        return username
     
     class Meta:
         db_table = 'orders'
