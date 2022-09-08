@@ -1,8 +1,8 @@
 {% extends 'base.html' %}
 
 {% block content %}
-
-        <div class="cart-section">
+<div id="cart-page">
+    <div class="cart-section">
             <div class="container">
                 <div class="row">
                     <div class="col-md-9 cart">
@@ -12,45 +12,27 @@
                                 <div class="col align-self-center text-right text-muted">3 items</div>
                             </div>
                         </div>    
+
+                        
+                        {% for product in order.products %}
                         <div class="row border-top border-bottom">
                             <div class="row main align-items-center">
-                                <div class="col-2"><img class="img-fluid" src="https://i.imgur.com/1GrakTl.jpg"></div>
+                                <div class="col-2"><img class="img-fluid" src="{{product.get_product_image_url}}"></div>
                                 <div class="col-lg-6">
-                                    <div class="row text-muted">Shirt</div>
-                                    <div class="row">Lorem ipsum dolor sit amet consectetur adipisicing elit. Veniam laudantium magnam et laboriosam debitis modi reiciendis reprehenderit sequi. </div>
+                                    <div class="row text-muted">{{product.name}}</div>
+                                    {% comment %} <div class="row">short description</div> {% endcomment %}
                                 </div>
                                 <div class="col-lg-2">
                                     <a href="#">-</a><a href="#" class="border">1</a><a href="#">+</a>
                                 </div>
-                                <div class="col">Ksh. 44.00 <span class="close">&#10005;</span></div>
+                                <div class="col">Ksh. {{product.get_final_price}} <span class="close">&#10005;</span></div>
                             </div>
-                        </div>
-                        <div class="row">
-                            <div class="row main align-items-center">
-                                <div class="col-2"><img class="img-fluid" src="https://i.imgur.com/ba3tvGm.jpg"></div>
-                                <div class="col-lg-6">
-                                    <div class="row text-muted">Shirt</div>
-                                    <div class="row">Cotton T-shirt</div>
-                                </div>
-                                <div class="col">
-                                    <a href="#">-</a><a href="#" class="border">1</a><a href="#">+</a>
-                                </div>
-                                <div class="col">Ksh. 44.00 <span class="close">&#10005;</span></div>
-                            </div>
-                        </div>
-                        <div class="row border-top border-bottom">
-                            <div class="row main align-items-center">
-                                <div class="col-2"><img class="img-fluid" src="https://i.imgur.com/pHQ3xT3.jpg"></div>
-                                <div class="col-lg-6">
-                                    <div class="row text-muted">Shirt</div>
-                                    <div class="row">Cotton T-shirt</div>
-                                </div>
-                                <div class="col">
-                                    <a href="#">-</a><a href="#" class="border">1</a><a href="#">+</a>
-                                </div>
-                                <div class="col">Ksh. 44.00 <span class="close">&#10005;</span></div>
-                            </div>
-                        </div>
+                        </div> 
+                        {% endfor %}
+                            
+                        
+                        
+                        
                         <div class="back-to-shop"><a href="#">&leftarrow;</a><span class="text-muted">Back to shop</span></div>
                     </div>
                     <div class="col-md-3 summary">
@@ -77,5 +59,7 @@
             </div>
     
         </div>
+</div>
+        
         
 {% endblock content %}
