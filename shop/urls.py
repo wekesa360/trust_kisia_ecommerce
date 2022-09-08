@@ -14,11 +14,11 @@ app_name = 'retail'
 
 urlpatterns = [
     path('', category_view, name='home'),
-    path('product<pk>/',category_products_view, name='product'),
+    path('product<slug>/',category_products_view, name='product'),
     path('order-summary/', order_summary_view, name='order-summary'),
     path('checkout/', checkout_view, name='checkout'),
-    path('add-to-cart/<pk>/', add_to_cart, name='add-to-cart'),
-    path('remove-from-cart/<pk>', remove_from_cart, name='remove-from-cart'),
-    path('reduce-quantity-item/<pk>/', reduce_quantity_item, name='reduce-quantity-item')
+    path('add-to-cart/<str:slug>/', add_to_cart, name='add-to-cart'),
+    path('remove-from-cart/<slug>', remove_from_cart, name='remove-from-cart'),
+    path('reduce-quantity-item/<slug>/', reduce_quantity_item, name='reduce-quantity-item')
     
 ]
