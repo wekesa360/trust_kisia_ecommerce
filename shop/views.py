@@ -11,7 +11,9 @@ from .models import (
     Order,
     Customer
 )
+import math
 
+import pdb
 
 def category_view(request):
     """The home view where
@@ -25,7 +27,7 @@ def category_view(request):
     """
     if request.method == 'GET':
         products = Product.objects.all()
-    return render(request, 'index.html', context={'products': products})    
+    return render(request, 'index.html', context={'products': products, })    
 
 def category_products_view(request):
     """products rendered based on category.
@@ -47,10 +49,11 @@ def add_to_cart(request, slug):
     product = get_object_or_404(Product, slug=slug)
     device = request.COOKIES['device']
     customer = Customer.objects.get_or_create(device=device)
+    customer= get_object_or_404(Customer, device=device)
     order_item, created = OrderItem.objects.get_or_create(
         product=product,
         customer=customer,
-        ordered=False
+        ordered=False,
     )
     
     order_qs = Order.objects.filter(customer=customer, ordered=False)
@@ -80,7 +83,11 @@ def order_summary_view(request):
     try:
         device = request.COOKIES['device']
         customer = Customer.objects.get_or_create(device=device)
-        order = Order.objects.get(customer__device=customer.device, ordered=False)
+        customer= get_object_or_404(Customer, device=device)
+        order = Order.objects.get(customer=customer, ordered=False)
+        for p in order.products.all():
+            order = p
+        pdb.set_trace()
         context = {
             'object': order
         }
@@ -94,6 +101,7 @@ def remove_from_cart(request, slug):
     product = get_object_or_404(Product, slug=slug)
     device = request.COOKIES['device']
     customer = Customer.objects.get_or_create(device=device)
+    
     order_qs = Order.objects.filter(
         customer=customer,
         ordered=False
@@ -152,6 +160,7 @@ def checkout_view(request):
         form = CheckoutForm()
         device = request.COOKIES['device']
         customer = Customer.objects.get_or_create(device=device)
+        customer= get_object_or_404(Customer, device=device)
         order = Order.objects.get(customer=customer, ordered=False)
         context = {
             'form': form,
