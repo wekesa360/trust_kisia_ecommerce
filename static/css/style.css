@@ -368,7 +368,7 @@ label.radio input:checked+span {
 /* cart css */
 
 #cart-page {
-    background: #ddd;
+
     font-family: sans-serif;
     font-size: 0.8rem;
 }
@@ -392,7 +392,7 @@ label.radio input:checked+span {
     }
 }
 #cart-page .cart-section .cart{
-    background-color: #fff;
+    background-color: #ffff;
     padding: 4vh 5vh;
     border-bottom-left-radius: 1rem;
     border-top-left-radius: 1rem;
@@ -405,11 +405,11 @@ label.radio input:checked+span {
     }
 }
 #cart-page .cart-section .summary{
-    background-color: #ddd;
+    background-color: #e7e7e7;
     border-top-right-radius: 1rem;
     border-bottom-right-radius: 1rem;
     padding: 4vh;
-    color: rgb(65, 65, 65);
+    color: #414141;
 }
 @media(max-width:767px){
     #cart-page .cart-section .summary{
