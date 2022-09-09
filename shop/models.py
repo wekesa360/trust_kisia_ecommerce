@@ -33,9 +33,11 @@ class Product(models.Model):
     
     name = models.CharField(max_length=200)
     category = models.ForeignKey(Category, blank=False, unique=False, on_delete=models.CASCADE)
-    description = models.TextField(max_length=1000000)
-    price = models.DecimalField(decimal_places=2, max_digits=10)
-    discount = models.DecimalField(decimal_places=2, max_digits=10)
+    brand = models.CharField(max_length=256)
+    key_features = models.CharField(max_length=256000)
+    description = models.TextField(max_length=25600000)
+    price = models.DecimalField(decimal_places=0, max_digits=10)
+    discount = models.DecimalField(decimal_places=0, max_digits=10)
     tag = models.CharField(max_length=100, choices=TAGS_CHOICES, blank=True)
     slug = models.SlugField(unique=True)
     quantity = models.IntegerField()
@@ -106,7 +108,7 @@ class ProductImage(models.Model):
 
 class DeliveryCharges(models.Model):
     county = models.CharField(max_length=256)
-    specific_pickup_point = models.CharField(max_length=256)
+    specific_location = models.CharField(max_length=256)
     fee = models.PositiveBigIntegerField()
     
     def __str__(self):
@@ -136,7 +138,6 @@ class Customer(models.Model):
 
 
 class OrderItem(models.Model):
-    ordered = models.BooleanField()
     product = models.ForeignKey(Product, blank=False, unique=False, on_delete=models.CASCADE)
     quantity = models.IntegerField(default=1)
     customer = models.ForeignKey(Customer, blank=True, on_delete=models.CASCADE)
@@ -152,12 +153,12 @@ class OrderItem(models.Model):
     def get_discount_item_price(self):
         return self.quantity * self.product.discount
     
-    def get_amount_saved(self):
+    def get_total_with_discount(self):
         return self.get_total_item_price() - self.get_discount_item_price()
     
     def get_final_price(self):
-        if self.product.discount_price:
-            return self.get_discount_item_price()
+        if self.product.discount:
+            return self.get_total_with_discount()
         return self.get_total_item_price()
     
     class Meta:
@@ -175,20 +176,26 @@ class Order(models.Model):
     
     customer = models.ForeignKey(Customer, on_delete=models.CASCADE)
     products = models.ManyToManyField(OrderItem)
-    ordered = models.BooleanField(default=False)
     status = models.CharField(max_length=100, choices=STATUS_CHOICES, default='Pending', blank=True)
     ordered_date = models.DateTimeField()
     order_id = models.UUIDField(default=uuid.uuid4, unique=True, db_index=True, editable=False)
+    ordered = models.BooleanField(default=False)
     
     def get_total_price(self):
         total = 0
         for order_item in self.products.all():
-            total += order_item.get_final_price() 
-        return total + self.customer.delivery_address.fee
+            total += order_item.get_final_price()
+        return total # + self.customer.delivery_address.fee
 
     def __str__(self):
         username = f'{self.customer.first_name} {self.customer.last_name} complete order - {self.ordered}'
         return username
+    
+    def get_total_no_items(self):
+        count = 0
+        for order_item in self.products.all():
+            count += order_item.quantity
+        return count
     
     class Meta:
         db_table = 'orders'
