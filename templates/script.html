@@ -1,6 +1,9 @@
 
 <script src="https://kit.fontawesome.com/415119f36a.js" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-A3rJD856KowSb7dwlZdYEkO39Gagi7vIsF0jrRAoQmDKKtQBHUuLZ9AsSv4jD4Xa" crossorigin="anonymous"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
 <script>
     function getCookie(name) {
         var cookieValue = null;
@@ -32,4 +35,68 @@
     }
     
     document.cookie = 'device=' + device + ";domain=;path=/"    
+</script>
+
+
+
+<script>
+    
+    $(document).ready(function () {
+        // catch the form's submit event
+        
+            // create an AJAX call
+            $.ajax({
+                data: $(this).serialize(), // get the form data
+                url: "{% url 'shop:search' %}",
+                // on success
+                success: function (response) {
+                    console.log(response)
+                    const searchBar = document.getElementById('searchBar');
+                    searchBar.addEventListener('keyup', (e) => {
+                        const searchString = e.target.value.toLowerCase();
+                        let len = response.length
+                        for( i=0; i < len; i++){
+                            console.log(response[i])
+                            const filteredFields = () => {
+                                return (
+                                    fields.name.toLowerCase().includes(searchString) ||
+                                    fields.brand.toLowerCase().includes(searchString)
+                                );
+                            };
+                        };
+                        const filteredFields = () => {
+                            return (
+                                fields.name.toLowerCase().includes(searchString) ||
+                                fields.brand.toLowerCase().includes(searchString)
+                            );
+                        };
+                        displayFields(filteredFields);
+                    });
+                    
+                    const displayFields = (fields) => {
+                        const htmlString = fields
+                            .map((field) => {
+                                return `
+                                <li class="field">
+                                    <h2>${field.name}</h2>
+                                    <p>House: ${field.house}</p>
+                                    <img src="${field.image}"></img>
+                                </li>
+                            `;
+                            })
+                            .join('');
+                        fieldsList.innerHTML = htmlString;
+                    }
+
+                },
+                // on error
+                error: function (response) {
+                    // alert the error if any error occured
+                    console.log(response.responseJSON.errors)
+                }
+            });
+
+            return false;
+        })
+
 </script>
