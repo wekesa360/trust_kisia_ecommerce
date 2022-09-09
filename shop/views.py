@@ -1,9 +1,11 @@
+from email import header
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib import messages
 from django.core.exceptions import ObjectDoesNotExist 
 from django.utils import timezone
-
-from shop.forms import CheckoutForm
+from django.core import serializers
+from django.http import HttpResponse
+from .forms import CheckoutForm
 from .models import (
     Category,
     Product,
@@ -12,7 +14,7 @@ from .models import (
     Customer
 )
 import math
-
+import json
 import pdb
 
 def category_view(request):
@@ -27,7 +29,22 @@ def category_view(request):
     """
     if request.method == 'GET':
         products = Product.objects.all()
-    return render(request, 'index.html', context={'products': products, })    
+        
+    return render(request, 'index.html', context={'products': products})    
+
+def product_view(request, slug):
+    product = get_object_or_404(Product, slug=slug)
+    return render(request, 'product-details.html', context= {'product': product})
+
+def search_view(request):
+    qs = Product.objects.all()
+    products = serializers.serialize('json', qs)
+    response =  products
+    return HttpResponse(response, content_type='application/json')
+    
+    
+
+
 
 def category_products_view(request):
     """products rendered based on category.
@@ -53,7 +70,7 @@ def add_to_cart(request, slug):
     order_item, created = OrderItem.objects.get_or_create(
         product=product,
         customer=customer,
-        ordered=False,
+        # ordered=False,
     )
     
     order_qs = Order.objects.filter(customer=customer, ordered=False)
@@ -85,9 +102,9 @@ def order_summary_view(request):
         customer = Customer.objects.get_or_create(device=device)
         customer= get_object_or_404(Customer, device=device)
         order = Order.objects.get(customer=customer, ordered=False)
-        for p in order.products.all():
-            order = p
-        pdb.set_trace()
+        # for p in order.products.all():
+        #     order = p
+        # pdb.set_trace()
         context = {
             'object': order
         }
@@ -101,7 +118,7 @@ def remove_from_cart(request, slug):
     product = get_object_or_404(Product, slug=slug)
     device = request.COOKIES['device']
     customer = Customer.objects.get_or_create(device=device)
-    
+    customer= get_object_or_404(Customer, device=device)
     order_qs = Order.objects.filter(
         customer=customer,
         ordered=False
@@ -111,8 +128,8 @@ def remove_from_cart(request, slug):
         if order.products.filter(product__pk=product.pk).exists():
             order_item = OrderItem.objects.filter(
                 product= product,
-                customer= customer,
-                ordered = False
+                customer__device= customer.device,
+                # ordered = False
             )[0]
             order_item.delete()
             messages.info(request, 'Item \"'+order_item.product.name+'\" removed from cart')
@@ -125,9 +142,10 @@ def remove_from_cart(request, slug):
         return redirect('shop:product', slug=slug)
 
 def reduce_quantity_item(request, slug):
-    product = get_object_or_404(Product, slug)
+    product = get_object_or_404(Product, slug=slug)
     device = request.COOKIES['device']
     customer = Customer.objects.get_or_create(device=device)
+    customer= get_object_or_404(Customer, device=device)
     order_qs = Order.objects.filter(
         customer=customer,
         ordered = False
@@ -137,7 +155,7 @@ def reduce_quantity_item(request, slug):
         if order.products.filter(product__pk=product.pk).exists():
             order_item = OrderItem.objects.filter(
                 product=product,
-                ordered=False,
+                # ordered=False,
                 customer=customer
             )[0]
             if order_item.quantity > 1:
@@ -164,19 +182,21 @@ def checkout_view(request):
         order = Order.objects.get(customer=customer, ordered=False)
         context = {
             'form': form,
-            'order': order
+            'object': order
         }
         return render(request, 'checkout.html', context)
 
     if request.method == 'POST':
+        device = request.COOKIES['device']
         customer = Customer.objects.get_or_create(device=device)
+        customer= get_object_or_404(Customer, device=device)
         form = CheckoutForm(request.POST or None)
         if form.is_valid():
-            customer.delivery_address = form.cleaned_data.get('delivery_address')
             customer.first_name = form.cleaned_data.get('first_name')
             customer.last_name = form.cleaned_data.get('last_name')
             customer.phone_number = form.cleaned_data.get('phone_number')
-            customer.email = form.cleaned_data.get('emal')
+            customer.email = form.cleaned_data.get('email_address')
+            customer.delivery_address = form.cleaned_data.get('delivery_address')
             customer.save()
         
         else:
