@@ -9,23 +9,25 @@
                         <div class="title">
                             <div class="row">
                                 <div class="col"><h4><b>Shopping Cart</b></h4></div>
-                                <div class="col align-self-center text-right text-muted">3 items</div>
+                                <div class="col align-self-center text-right text-muted">{{object.get_total_no_items}} items</div>
                             </div>
                         </div>    
 
                         
-                        {% for product in order.products %}
+                        {% for product in object.products.all %}
                         <div class="row border-top border-bottom">
                             <div class="row main align-items-center">
-                                <div class="col-2"><img class="img-fluid" src="{{product.get_product_image_url}}"></div>
-                                <div class="col-lg-6">
-                                    <div class="row text-muted">{{product.name}}</div>
+                                <div class="col"><img class="img-fluid" src="{{product.product.get_product_image_url}}"></div>
+                                <div class="col">
+                                    <div class="row text-muted">{{product.product.name}}</div>
                                     {% comment %} <div class="row">short description</div> {% endcomment %}
                                 </div>
-                                <div class="col-lg-2">
-                                    <a href="#">-</a><a href="#" class="border">1</a><a href="#">+</a>
+                                <div class="col">
+                                    <a href="{% url 'shop:reduce-quantity-item' product.product.slug %}"> - </a>
+                                    <a href="" class="border">{{product.quantity}}</a>
+                                    <a href="{% url 'shop:add-to-cart' product.product.slug %}"> + </a>
                                 </div>
-                                <div class="col">Ksh. {{product.get_final_price}} <span class="close">&#10005;</span></div>
+                                <div class="col">Ksh. {{product.get_final_price}} <a href="{% url 'shop:remove-from-cart' product.product.slug %}"><span class="close">&#10005;</span></a></div>
                             </div>
                         </div> 
                         {% endfor %}
@@ -39,20 +41,13 @@
                         <div><h5><b>Summary</b></h5></div>
                         <hr>
                         <div class="row">
-                            <div class="col" style="padding-left:0;">ITEMS 3</div>
-                            <div class="col text-right">Ksh. 132.00</div>
+                            <div class="col" style="padding-left:0;">ITEMS {{object.get_total_no_items}}</div>
                         </div>
-                        <form>
-                            <p>SHIPPING</p>
-                            <select><option class="text-muted">Standard-Delivery- Ksh.5.00</option></select>
-                            <p>GIVE CODE</p>
-                            <input id="code" placeholder="Enter your code">
-                        </form>
                         <div class="row" style="border-top: 1px solid rgba(0,0,0,.1); padding: 2vh 0;">
                             <div class="col">TOTAL PRICE</div>
-                            <div class="col text-right">Ksh. 137.00</div>
+                            <div class="col text-right">Ksh. {{object.get_total_price}}</div>
                         </div>
-                        <button class="btn">CHECKOUT</button>
+                        <a href="{% url 'shop:checkout' %}"><button class="btn">CHECKOUT</button></a>
                     </div>
                 </div>
                 
