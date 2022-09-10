@@ -13,9 +13,7 @@ from .models import (
     Order,
     Customer
 )
-import math
-import json
-import pdb
+
 
 def category_view(request):
     """The home view where
@@ -36,15 +34,13 @@ def product_view(request, slug):
     product = get_object_or_404(Product, slug=slug)
     return render(request, 'product-details.html', context= {'product': product})
 
+
 def search_view(request):
     qs = Product.objects.all()
     products = serializers.serialize('json', qs)
     response =  products
     return HttpResponse(response, content_type='application/json')
     
-    
-
-
 
 def category_products_view(request):
     """products rendered based on category.
@@ -72,7 +68,6 @@ def add_to_cart(request, slug):
         customer=customer,
         # ordered=False,
     )
-    
     order_qs = Order.objects.filter(customer=customer, ordered=False)
     
     if order_qs.exists():
@@ -171,7 +166,7 @@ def reduce_quantity_item(request, slug):
     else:
         messages.info(request, 'You do not have an order')
         return redirect('shop:order-summary')
-    
+
 
 def checkout_view(request):
     if request.method == 'GET':
