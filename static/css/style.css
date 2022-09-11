@@ -605,3 +605,19 @@ label.radio input:checked+span {
     text-decoration: none;
     color: #fdcc49; 
 }
+
+
+.searchList {
+    width: 31%;
+    position: absolute;
+    left: 33%;
+    top: 15%;
+    /* transform: translate(-50%, -50%); */
+    z-index: 1;
+    text-align: center;
+    background-color: white;
+}
+
+.searchList a:hover {
+    color:blue !important;
+}
