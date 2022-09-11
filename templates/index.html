@@ -201,7 +201,12 @@
                                                             <div class="thumb-content">
                                                                 <h4>{{product.name}}</h4>									
                                                                 <p class="item-price"><b>Ksh. {{product.price}}</b></p>
+                                                                
+                                                                {% if product.quantity <= 0 %}
+                                                                    <p> Out Of Stock </p>
+                                                                {% else %}
                                                                 <a href="{{ product.get_add_to_cart_url }}" class="btn btn-primary">Add to Cart</a>
+                                                                {% endif %}
                                                             </div>						
                                                         </div>
                                                     </div>
