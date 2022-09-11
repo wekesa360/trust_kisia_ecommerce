@@ -54,9 +54,11 @@
                         <div class="search-bar">
                             <div class="input-group">
                                 <input type="text" class="form-control" name="x" id="searchBar" placeholder="Search">
-                                <input type="hidden" id="Url" data-url="{% url 'shop:search' %}" />
-                                <a href="#" class="btn btn-search">SEARCH</a>
+                                {% comment %} <a href="#" class="btn btn-search">SEARCH</a> {% endcomment %}
                             </div>
+                        </div>
+                        <div class="searchList">
+                            <ul id="productList" style="list-style-type: none;"></ul>
                         </div>
                     </div>
                     <div class="col-lg-3">
