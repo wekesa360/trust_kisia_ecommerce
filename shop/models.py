@@ -52,7 +52,7 @@ class Product(models.Model):
         super(Product, self).save(*args, **kwargs)
     
     def get_absolute_url(self):
-        return f'/{self.category.slug}/{self.slug}/'
+        return f'http://127.0.0.1:8000/{self.category.pk}/{self.slug}/'
     
     def get_thumbnail(self):
         if self.thumbnail:
@@ -141,6 +141,7 @@ class OrderItem(models.Model):
     product = models.ForeignKey(Product, blank=False, unique=False, on_delete=models.CASCADE)
     quantity = models.IntegerField(default=1)
     customer = models.ForeignKey(Customer, blank=True, on_delete=models.CASCADE)
+    ordered = models.BooleanField(default=False)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
@@ -161,6 +162,11 @@ class OrderItem(models.Model):
             return self.get_total_with_discount()
         return self.get_total_item_price()
     
+    def if_in_stock(self):
+        if self.quantity < self.product.quantity:
+            return True
+        return False
+           
     class Meta:
         db_table = 'order_items'
 
@@ -196,6 +202,7 @@ class Order(models.Model):
         for order_item in self.products.all():
             count += order_item.quantity
         return count
+    
     
     class Meta:
         db_table = 'orders'
