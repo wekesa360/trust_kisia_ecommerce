@@ -32,6 +32,7 @@ def category_view(request):
 
 def product_view(request, slug):
     product = get_object_or_404(Product, slug=slug)
+    
     return render(request, 'product-details.html', context= {'product': product})
 
 
@@ -97,9 +98,6 @@ def order_summary_view(request):
         customer = Customer.objects.get_or_create(device=device)
         customer= get_object_or_404(Customer, device=device)
         order = Order.objects.get(customer=customer, ordered=False)
-        # for p in order.products.all():
-        #     order = p
-        # pdb.set_trace()
         context = {
             'object': order
         }
@@ -175,6 +173,12 @@ def checkout_view(request):
         customer = Customer.objects.get_or_create(device=device)
         customer= get_object_or_404(Customer, device=device)
         order = Order.objects.get(customer=customer, ordered=False)
+        for order_product in order.products.all():
+            p =order_product
+            product = get_object_or_404(Product, pk=order_product.product.pk)
+            ordered_quantity = product.quantity - order_product.quantity
+            product.quantity = ordered_quantity
+            product.save()
         context = {
             'form': form,
             'object': order
