@@ -159,8 +159,8 @@ class OrderItem(models.Model):
     
     def get_final_price(self):
         if self.product.discount:
-            return self.get_total_with_discount()
-        return self.get_total_item_price()
+            return f'{self.get_total_with_discount():,}'
+        return f'{self.get_total_item_price():,}'
     
     def if_in_stock(self):
         if self.quantity < self.product.quantity:
@@ -191,7 +191,7 @@ class Order(models.Model):
         total = 0
         for order_item in self.products.all():
             total += order_item.get_final_price()
-        return total # + self.customer.delivery_address.fee
+        return f'{total:,}' # + self.customer.delivery_address.fee
 
     def __str__(self):
         username = f'{self.customer.first_name} {self.customer.last_name} complete order - {self.ordered}'
