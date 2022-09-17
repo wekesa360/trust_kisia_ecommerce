@@ -1,4 +1,7 @@
+
 from django import forms
+from captcha.fields import ReCaptchaField
+from captcha.widgets import ReCaptchaV2Checkbox
 
 
 class CheckoutForm(forms.Form):
@@ -31,3 +34,9 @@ class CheckoutForm(forms.Form):
         'required':'required',
         'id': 'address'
     }))
+    ordered = forms.BooleanField(initial=True)
+    
+    captcha = ReCaptchaField(widget=ReCaptchaV2Checkbox)
+    
+    
+    

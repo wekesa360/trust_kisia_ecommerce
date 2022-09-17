@@ -25,6 +25,10 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = os.environ.get('SECRET_KEY')
 
+# recaptcha keys
+RECAPTCHA_PUBLIC_KEY = os.environ.get('RECAPTCHA_PUBLIC_KEY')
+RECAPTCHA_PRIVATE_KEY = os.environ.get('RECAPTCHA_PRIVATE_KEY')
+
 # SECURITY WARNING: don't run with debug turned on in production!
 cair_db_name = os.environ.get('DB_NAME') if os.environ.get('DB_NAME') else 'default_db'
 cair_db_user = os.environ.get('DB_USER') if os.environ.get('DB_USER') else '@me!'
@@ -46,6 +50,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'captcha',
     'shop',
 ]
 
