@@ -38,8 +38,7 @@ def product_view(request, slug):
 
 def search_view(request):
     qs = Product.objects.all()
-    products = serializers.serialize('json', qs)
-    response =  products
+    response = serializers.serialize('json', qs)
     return HttpResponse(response, content_type='application/json')
     
 
@@ -174,7 +173,7 @@ def checkout_view(request):
         customer= get_object_or_404(Customer, device=device)
         order = Order.objects.get(customer=customer, ordered=False)
         for order_product in order.products.all():
-            p =order_product
+            p = order_product
             product = get_object_or_404(Product, pk=order_product.product.pk)
             ordered_quantity = product.quantity - order_product.quantity
             product.quantity = ordered_quantity
@@ -190,16 +189,23 @@ def checkout_view(request):
         customer = Customer.objects.get_or_create(device=device)
         customer= get_object_or_404(Customer, device=device)
         form = CheckoutForm(request.POST or None)
+        
+        # import pdb
+        # pdb.set_trace()
         if form.is_valid():
             customer.first_name = form.cleaned_data.get('first_name')
             customer.last_name = form.cleaned_data.get('last_name')
             customer.phone_number = form.cleaned_data.get('phone_number')
             customer.email = form.cleaned_data.get('email_address')
             customer.delivery_address = form.cleaned_data.get('delivery_address')
+            customer.ordered = True
             customer.save()
-        
         else:
             messages.info(request, 'cannot save details')
             return redirect('shop:checkout')
+        if customer.ordered == True:
+            order = get_object_or_404(Order, customer=customer)
+            order.ordered = True
+            order.save()
         
         return render(request, 'success.html')
