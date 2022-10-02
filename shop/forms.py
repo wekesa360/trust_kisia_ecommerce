@@ -33,9 +33,7 @@ class CheckoutForm(forms.Form):
         'class': 'form-control',
         'required':'required',
         'id': 'address'
-    }))
-    ordered = forms.BooleanField(initial=True)
-    
+    }))    
     captcha = ReCaptchaField(widget=ReCaptchaV2Checkbox)
     
     
