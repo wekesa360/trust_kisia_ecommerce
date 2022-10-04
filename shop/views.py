@@ -32,17 +32,16 @@ def category_view(request):
 
 def product_view(request, slug):
     product = get_object_or_404(Product, slug=slug)
-    
     return render(request, 'product-details.html', context= {'product': product})
 
 
 def search_view(request):
     qs = Product.objects.all()
     response = serializers.serialize('json', qs)
-    return HttpResponse(response, content_type='application/json')
+    return HttpResponse(request, response, content_type='application/json')
     
 
-def category_products_view(request):
+def category_products_view(request, slug):
     """products rendered based on category.
 
     Args:
@@ -50,13 +49,14 @@ def category_products_view(request):
         slug (_type_): _description_
     """
     try:
-        if request.method == 'POST':
-            category = Category.objects.get(slug='slug')
+        if request.method == 'GET':
+            category = Category.objects.get(slug=slug)
             products = Product.object.all().filter(category=category)
             
             return render(request, 'product.html', context= {'products': products})
     except ObjectDoesNotExist:
         return redirect('shop:home')
+    
 
 def add_to_cart(request, slug):
     product = get_object_or_404(Product, slug=slug)
@@ -72,7 +72,6 @@ def add_to_cart(request, slug):
     
     if order_qs.exists():
         order = order_qs[0]
-        
         if order.products.filter(product__pk=product.pk).exists():
             order_item.quantity += 1
             order_item.save()
