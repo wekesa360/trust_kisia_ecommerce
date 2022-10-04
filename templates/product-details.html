@@ -27,7 +27,7 @@
                                             <div class="ml-2"> <small class="dis-price">Ksh. </small> <span>40% OFF</span> </div>
                                         </div>
                                     </div>
-                                    <p class="about">{{product.key_features}}</p>
+                                    <p class="about">{{product.key_features | safe}}</p>
                                     
                                         
                                         {% if product.quantity <= 0 %}
@@ -48,7 +48,7 @@
                             <h5>Product Description</h5>
                         </div>
                         <div class="descr">
-                            <p>{{product.description}}</p>
+                            <p>{{product.description | safe}}</p>
                         </div>
                     </div>
                 </div>
