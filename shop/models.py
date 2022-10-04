@@ -1,7 +1,7 @@
+from enum import unique
 from urllib.parse import MAX_CACHE_SIZE
 import uuid
 from django.db import models
-# from autoslug import AutoSlugField
 from django.utils.text import slugify
 from PIL import Image
 from io import BytesIO
@@ -14,8 +14,11 @@ from phonenumber_field.modelfields import PhoneNumberField
 class Category(models.Model):
     category_name = models.CharField(max_length=200, unique=False, blank=False)
     sub_category = models.CharField(max_length=200, unique=True)
-    # slug = AutoSlugField(populate_from=lambda instance: instance.category_name, 
-                         # slugify=lambda value: value.replace(' ', '-'))
+    slug = models.SlugField(max_length=200, unique=True, blank=True)
+    
+    def save(self, *args, **kwargs):
+        self.slug = slugify(f'{self.category_name}-{self.sub_category}')
+        super(Category, self).save(*args, **kwargs)
     
     def __str__(self) -> str:
         return self.sub_category
@@ -39,17 +42,20 @@ class Product(models.Model):
     price = models.DecimalField(decimal_places=0, max_digits=10)
     discount = models.DecimalField(decimal_places=0, max_digits=10)
     tag = models.CharField(max_length=100, choices=TAGS_CHOICES, blank=True)
-    slug = models.SlugField(unique=True)
+    slug = models.SlugField(max_length=200, unique=True, blank=True)
     quantity = models.IntegerField()
     created_at = models.DateTimeField(auto_now_add=True)
     product_uuid = models.UUIDField(default=uuid.uuid4, unique=True, db_index=True, editable=False)
     
-    def __str__(self) -> str:
-        return self.name
-    
     def save(self, *args, **kwargs):
         self.slug = slugify(self.name)
         super(Product, self).save(*args, **kwargs)
+
+ 
+    def __str__(self) -> str:
+        return self.name
+    
+    
     
     def get_absolute_url(self):
         return f'http://127.0.0.1:8000/{self.category.pk}/{self.slug}/'
@@ -59,6 +65,10 @@ class Product(models.Model):
             return 'http://127.0.0.1:8000' + self.thumbnail.url
         else:
             return ''
+        
+    def save(self, *args, **kwargs):
+        self.slug = slugify(self.name)
+        super(Product, self).save(*args, **kwargs)
     
     def get_product_image_url(self):
         print(ProductImage.objects.filter(product_id=self.pk).all()[1].image.url)
@@ -124,6 +134,7 @@ class Customer(models.Model):
     phone_number = PhoneNumberField(null=True)
     device = models.CharField(max_length=256)
     email = models.EmailField(null=True)
+    ordered = models.BooleanField(default=False)
     delivery_address = models.CharField(max_length=80, blank=False, unique=False, null=True)
     
     def __str__(self) -> str:
@@ -133,8 +144,6 @@ class Customer(models.Model):
 
     class Meta:
         db_table = 'customer_details'
-
-
 
 
 class OrderItem(models.Model):
@@ -184,8 +193,8 @@ class Order(models.Model):
     products = models.ManyToManyField(OrderItem)
     status = models.CharField(max_length=100, choices=STATUS_CHOICES, default='Pending', blank=True)
     ordered_date = models.DateTimeField()
+    ordered= models.BooleanField(default=False)
     order_id = models.UUIDField(default=uuid.uuid4, unique=True, db_index=True, editable=False)
-    ordered = models.BooleanField(default=False)
     
     def get_total_price(self):
         total = 0
