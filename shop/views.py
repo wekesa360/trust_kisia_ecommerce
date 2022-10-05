@@ -38,7 +38,7 @@ def product_view(request, slug):
 def search_view(request):
     qs = Product.objects.all()
     response = serializers.serialize('json', qs)
-    return HttpResponse(request, response, content_type='application/json')
+    return HttpResponse(response, content_type='application/json')
     
 
 def category_products_view(request, slug):
@@ -189,8 +189,7 @@ def checkout_view(request):
         customer= get_object_or_404(Customer, device=device)
         form = CheckoutForm(request.POST or None)
         
-        # import pdb
-        # pdb.set_trace()
+
         if form.is_valid():
             customer.first_name = form.cleaned_data.get('first_name')
             customer.last_name = form.cleaned_data.get('last_name')
