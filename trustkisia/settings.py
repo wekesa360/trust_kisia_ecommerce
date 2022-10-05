@@ -30,11 +30,11 @@ RECAPTCHA_PUBLIC_KEY = os.environ.get('RECAPTCHA_PUBLIC_KEY')
 RECAPTCHA_PRIVATE_KEY = os.environ.get('RECAPTCHA_PRIVATE_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-cair_db_name = os.environ.get('DB_NAME') if os.environ.get('DB_NAME') else 'default_db'
-cair_db_user = os.environ.get('DB_USER') if os.environ.get('DB_USER') else '@me!'
-cair_db_password = os.environ.get('DB_PASS') if os.environ.get('DB_PASS') else 'pass'
-cair_db_host = os.environ.get('DB_HOST') if os.environ.get('DB_HOST') else 'localhost'
-cair_db_port = os.environ.get('DB_PORT') if os.environ.get('DB_PORT') else '5432'
+trust_db_name = os.environ.get('DB_NAME') if os.environ.get('DB_NAME') else 'default_db'
+trust_db_user = os.environ.get('DB_USER') if os.environ.get('DB_USER') else '@me!'
+trust_db_password = os.environ.get('DB_PASS') if os.environ.get('DB_PASS') else 'pass'
+trust_db_host = os.environ.get('DB_HOST') if os.environ.get('DB_HOST') else 'localhost'
+trust_db_port = os.environ.get('DB_PORT') if os.environ.get('DB_PORT') else '5432'
 DEBUG = True
 
 ALLOWED_HOSTS = []
@@ -91,11 +91,11 @@ WSGI_APPLICATION = 'trustkisia.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': cair_db_name,
-        'USER': cair_db_user,
-        'PASSWORD': cair_db_password,
-        'HOST': cair_db_host,
-        'PORT': cair_db_port,
+        'NAME': trust_db_name,
+        'USER': trust_db_user,
+        'PASSWORD': trust_db_password,
+        'HOST': trust_db_host,
+        'PORT': trust_db_port,
     }
 }
 
