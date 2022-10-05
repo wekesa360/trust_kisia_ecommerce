@@ -18,7 +18,8 @@
                             <li class="dropdwn"><a href="#">Computing<i class="fa fa-angle-right fa-pull-right"></i></a>
                                     <ul class="dropdwn-content">
                                         <li><a href="#">Desktop Computers</a></li>
-                                        <li class="dropdwn2"><a href="#">Laptops<i class="fa fa-angle-right fa-pull-right"></i></a>
+                                        <li class="dropdwn2">
+                                            <a href="#">Laptops<i class="fa fa-angle-right fa-pull-right"></i></a>
                                             <ul class="dropdwn-content2">
                                                 <li><a href="#">New</a></li>
                                                 <li><a href="#">Ex-UK</a></li>
@@ -177,12 +178,6 @@
                             <div class="col-md-12">
                                 <h2>Featured <b>Products</b></h2>
                                 <div id="myCarousel1" class="carousel slide" data-bs-ride="carousel" data-interval="0">
-                                <!-- Carousel indicators
-                                <ol class="carousel-indicators">
-                                    <li data-bs-target="#myCarousel1" data-bs-slide-to="0" class="active"></li>
-                                    <li data-bs-target="#myCarousel1" data-bs-slide-to="1"></li>
-                                    <li data-bs-target="#myCarousel1" data-bs-slide-to="2"></li>
-                                </ol>    -->
                                 <!-- Wrapper for carousel items -->
                                 <div class="carousel-inner">
                                     <div class="item carousel-item active">
@@ -193,13 +188,12 @@
                                                 {% if product.tag == 'Featured' %}
                                                     <div class="col-sm-3">
                                                         <div class="thumb-wrapper">
-                                                            <span class="wish-icon"><i class="fa fa-heart-o"></i></span>
                                                             <div class="img-box">
                                                                 <a href="{%url 'shop:product-details' product.slug %}">
                                                                 <img src="{{product.get_product_image_url}}" class="img-fluid" alt="Macbook"></a>  
                                                             </div>
                                                             <div class="thumb-content">
-                                                                <h4>{{product.name}}</h4>									
+                                                                <h4>{{product.name | truncatechars:30}}</h4>									
                                                                 <p class="item-price"><b>Ksh. {{product.price}}</b></p>
                                                                 
                                                                 {% if product.quantity <= 0 %}
@@ -212,20 +206,10 @@
                                                     </div>
                                                
                                                 {% endif %}
-                                            {% endfor %}
-                                                
-
-                                            								                                           				
+                                            {% endfor %}            								                                           				
                                         </div>
                                     </div>
                                 </div>
-                                <!-- Carousel controls
-                                <a class="carousel-control-prev" href="#myCarousel1" data-bs-slide="prev">
-                                    <i class="fa fa-angle-left"></i>
-                                </a>
-                                <a class="carousel-control-next" href="#myCarousel1" data-bs-slide="next">
-                                    <i class="fa fa-angle-right"></i>
-                                </a> -->
                             </div>
                             </div>
                         </div>
