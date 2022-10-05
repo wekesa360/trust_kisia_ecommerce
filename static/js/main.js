@@ -25,3 +25,27 @@ const displayFields = (fields) => {
         .join('');
     fieldsList.innerHTML = htmlString;
 }
+
+$(document).ready(function () {
+    // catch the form's submit event
+    
+        // create an AJAX call
+        $.ajax({
+            data: $(this).serialize(), // get the form data
+            url: "{% url 'shop:search' %}",
+            // on success
+            success: function (response) {
+                console.log(response)
+                const searchBar = document.getElementById('searchBar');
+                
+
+            },
+            // on error
+            error: function (response) {
+                // alert the error if any error occured
+                console.log(response.responseJSON.errors)
+            }
+        });
+
+        return false;
+    })
