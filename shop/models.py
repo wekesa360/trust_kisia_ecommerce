@@ -13,11 +13,12 @@ from phonenumber_field.modelfields import PhoneNumberField
 
 class Category(models.Model):
     category_name = models.CharField(max_length=200, unique=False, blank=False)
-    sub_category = models.CharField(max_length=200, unique=True)
+    sub_category = models.CharField(max_length=200, unique=False )
     slug = models.SlugField(max_length=200, unique=True, blank=True)
+    type = models.CharField(max_length=150, default='new')
     
     def save(self, *args, **kwargs):
-        self.slug = slugify(f'{self.category_name}-{self.sub_category}')
+        self.slug = slugify(f'{self.category_name}-{self.sub_category}-{self.type}')
         super(Category, self).save(*args, **kwargs)
     
     def __str__(self) -> str:
@@ -35,7 +36,7 @@ class Product(models.Model):
     )
     
     name = models.CharField(max_length=200)
-    category = models.ForeignKey(Category, blank=False, unique=False, on_delete=models.CASCADE)
+    category  = models.ForeignKey(Category, blank=False, unique=False, on_delete=models.CASCADE)
     brand = models.CharField(max_length=256)
     key_features = models.CharField(max_length=256000)
     description = models.TextField(max_length=25600000)
@@ -72,7 +73,7 @@ class Product(models.Model):
     
     def get_product_image_url(self):
         print(ProductImage.objects.filter(product_id=self.pk).all()[1].image.url)
-        url = "..{}".format(ProductImage.objects.filter(product_id=self.pk).first().image.url)
+        url = "http://127.0.0.1:8000/{}".format(ProductImage.objects.filter(product_id=self.pk).first().image.url)
         return url
     
     def get_all_product_images(self):
