@@ -51,7 +51,9 @@ def category_products_view(request, slug):
     try:
         if request.method == 'GET':
             category = Category.objects.get(slug=slug)
-            products = Product.object.all().filter(category=category)
+            products = Product.objects.all().filter(category=category)
+            # import pdb
+            # pdb.set_trace()
             
             return render(request, 'product.html', context= {'products': products})
     except ObjectDoesNotExist:
