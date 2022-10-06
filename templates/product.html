@@ -2,48 +2,46 @@
 
 {% block content %}
 
-<div class="product-item">
-    <!-- featured products -->
-    <div class="container-xl">
-        <div class="row">
-            <div class="col-md-12">
-                <h2>Featured <b>Products</b></h2>
-                <div id="myCarousel1" class="carousel slide" data-bs-ride="carousel" data-interval="0">
-                <!-- Wrapper for carousel items -->
-                <div class="carousel-inner">
-                    <div class="item carousel-item active">
-                        <div class="row">
-                            {% for product in products %}
-                                {% if product.tag == 'Featured' %}
-                                    <div class="col-sm-3">
-                                        <div class="thumb-wrapper">
-                                            <span class="wish-icon"><i class="fa fa-heart-o"></i></span>
-                                            <div class="img-box">
-                                                <a href="{%url 'shop:product-details' product.slug %}">
-                                                <img src="{{product.get_product_image_url}}" class="img-fluid" alt="Macbook"></a>  
+<div class="container">
+    <div class="">
+        <div class="product-item">
+            <!-- featured products -->
+            <div class="container-xl">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div id="myCarousel1" class="carousel slide" data-bs-ride="carousel" data-interval="0">
+                        <!-- Wrapper for carousel items -->
+                        <div class="carousel-inner">
+                            <div class="item carousel-item active">
+                                <div class="row">
+                                    {% for product in products %}
+                                            <div class="col-sm-3">
+                                                <div class="thumb-wrapper">
+                                                    <div class="img-box">
+                                                        <a href="{%url 'shop:product-details' product.slug %}">
+                                                        <img src="{{product.get_product_image_url}}" class="img-fluid" alt="Macbook"></a>  
+                                                    </div>
+                                                    <div class="thumb-content">
+                                                        <h4>{{product.name | truncatechars:37}}</h4>									
+                                                        <p class="item-price"><b>Ksh. {{product.price}}</b></p>
+                                                        
+                                                        {% if product.quantity <= 0 %}
+                                                            <p> Out Of Stock </p>
+                                                        {% else %}
+                                                        <a href="{{ product.get_add_to_cart_url }}" class="btn btn-primary">Add to Cart</a>
+                                                        {% endif %}
+                                                    </div>						
+                                                </div>
                                             </div>
-                                            <div class="thumb-content">
-                                                <h4>{{product.name}}</h4>									
-                                                <p class="item-price"><b>Ksh. {{product.price}}</b></p>
-                                                
-                                                {% if product.quantity <= 0 %}
-                                                    <p> Out Of Stock </p>
-                                                {% else %}
-                                                <a href="{{ product.get_add_to_cart_url }}" class="btn btn-primary">Add to Cart</a>
-                                                {% endif %}
-                                            </div>						
-                                        </div>
-                                    </div>
-                               
-                                {% endif %}
-                            {% endfor %}                                                                                          
+                                    {% endfor %}            								                                           				
+                                </div>
+                            </div>
                         </div>
+                    </div>
                     </div>
                 </div>
             </div>
-            </div>
         </div>
     </div>
-</div>
-
+</div><br>
 {% endblock content %}
