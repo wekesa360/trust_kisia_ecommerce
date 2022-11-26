@@ -1,6 +1,6 @@
 .env
-__pycahce__/
-*/__pycahce__/
+__pycache__/
+*/__pycache__/
 venv
 migrations
 */migrations
