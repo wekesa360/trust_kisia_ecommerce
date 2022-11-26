@@ -44,10 +44,12 @@ ALLOWED_HOSTS = []
 
 INSTALLED_APPS = [
     'jazzmin',
+    'shop.templatetags.filter',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
+    "django.contrib.humanize",
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'captcha',
@@ -78,6 +80,9 @@ TEMPLATES = [
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
             ],
+            'libraries':{
+                'filter': 'shop.templatetags.filter',
+            }
         },
     },
 ]
