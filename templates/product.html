@@ -21,7 +21,7 @@
                                                     </div>
                                                     <div class="thumb-content">
                                                         <h4>{{product.name | truncatechars:37}}</h4>									
-                                                        <p class="item-price"><b>Ksh. {{product.price}}</b></p>
+                                                        <p class="item-price"><b>Ksh. {{product.price|intcomma}}</b></p>
                                                         {% if product.quantity <= 0 %}
                                                             <p> Out Of Stock </p>
                                                         {% else %}

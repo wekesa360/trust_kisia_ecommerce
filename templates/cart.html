@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{%load humanize%}
 {% block content %}
 <div id="cart-page">
     <div class="cart-section">
@@ -16,7 +17,7 @@
                             <div class="row main align-items-center">
                                 <div class="col"><img class="img-fluid" src="{{product.product.get_product_image_url}}"></div>
                                 <div class="col">
-                                    <div class="row text-muted">{{product.product.name}}</div>
+                                    <div class="row text-muted">{{product.product.name|truncatechars:38}}</div>
                                     {% comment %} <div class="row">short description</div> {% endcomment %}
                                 </div>
                                 <div class="col">
@@ -24,14 +25,14 @@
                                     <a href="" class="border">{{product.quantity}}</a>
                                     <a href="{% url 'shop:add-to-cart' product.product.slug %}"> + </a>
                                 </div>
-                                <div class="col">Ksh. {{product.get_final_price}} <a href="{% url 'shop:remove-from-cart' product.product.slug %}"><span class="close">&#10005;</span></a></div>
-                                <div class="col">
+                                <div class="col">Ksh. {{product.get_final_price|intcomma}}</div>
+                                <div class="col">Discount: Ksh. {{product.get_discount_item_price|intcomma}} 
                                 </div>
                                 <div class="col"><a href="{% url 'shop:remove-from-cart' product.product.slug %}"><span class="close">&#10005;</span></a></div>
                             </div>
                         </div> 
                         {% endfor %}
-                        <div class="back-to-shop"><a href="#">&leftarrow;</a><span class="text-muted">Back to shop</span></div>
+                        <div class="back-to-shop"><a href="{% url 'shop:home' %}">&leftarrow;<span class="text-muted">Back to shop</span></a></div>
                     </div>
                     <div class="col-md-3 summary">
                         <div><h5><b>Summary</b></h5></div>
@@ -41,7 +42,7 @@
                         </div>
                         <div class="row" style="border-top: 1px solid rgba(0,0,0,.1); padding: 2vh 0;">
                             <div class="col">TOTAL PRICE</div>
-                            <div class="col text-right">Ksh. {{object.get_total_price}}</div>
+                            <div class="col text-right">Ksh. {{object.get_total_price|intcomma}}</div>
                         </div>
                         <a href="{% url 'shop:checkout' %}"><button class="btn">CHECKOUT</button></a>
                     </div>

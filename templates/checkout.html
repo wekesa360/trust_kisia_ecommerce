@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{%load humanize%}
 {% block content %}
 <div id="checkout-page">
     <div class="checkout-section">
@@ -61,7 +62,7 @@
                 <div class="card card-blue p-3 text-white mb-3">
                    <span>Total Amount</span>
                     <div class="d-flex flex-row align-items-end mb-3">
-                        <h1 class="mb-0 yellow">Ksh. {{object.get_total_price}}</h1>
+                        <h1 class="mb-0 yellow">Ksh. {{object.get_total_price|intcomma}}</h1>
                     </div>
                     <span>Checkout Amount and Shipping charges</span>
                     <a href="#" class="yellow decoration">Know all the features</a>
