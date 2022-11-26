@@ -1,5 +1,4 @@
 {% extends 'base.html' %}
-
 {% block content %}
         <div class="container mt-5 mb-5">
             <div class="row d-flex justify-content-center">
@@ -27,8 +26,6 @@
                                         </div>
                                     </div>
                                     <p class="about">{{product.key_features | safe}}</p>
-                                    
-                                        
                                         {% if product.quantity <= 0 %}
                                             <p>Out Of Stock</p>
                                          {% else %}
@@ -37,8 +34,7 @@
                                             <a href="{{ product.get_add_to_cart_url }}">
                                             <button class="btn btn-danger text-uppercase mr-2 px-4"> Add to cart <i class="fa fa-shopping-cart"></i></button><a></div>
                                         </div>
-                                        {% endif %}
-                                        
+                                        {% endif %} 
                             </div>
                         </div>
                     </div>
@@ -51,7 +47,6 @@
                         </div>
                     </div>
                 </div>
-                
             </div>
         </div>
 {% endblock content %}

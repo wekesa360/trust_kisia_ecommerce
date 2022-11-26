@@ -1,5 +1,4 @@
 {% extends 'base.html' %}
-
 {% block content %}
         <div class="container">
             <div class="row">
@@ -131,7 +130,6 @@
                         </ul>
                     </nav>
                 </div>
-
                 <div class="col-lg-8">
                     <!-- Carousel -->
                     <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="carousel">
@@ -158,17 +156,11 @@
                         </a>
                       </div>
                 </div>
-                    
-                
-                
-                
                 <div class="col-lg-">
                     <!-- poster -->
                 </div>
             </div>
         </div>
-
-        
         <div class="container">
             <div class="main-card">
                 <div class="product-item">
@@ -182,8 +174,6 @@
                                 <div class="carousel-inner">
                                     <div class="item carousel-item active">
                                         <div class="row">
-                                            
-                                            
                                             {% for product in products %}
                                                 {% if product.tag == 'Featured' %}
                                                     <div class="col-sm-3">
@@ -204,7 +194,6 @@
                                                             </div>						
                                                         </div>
                                                     </div>
-                                               
                                                 {% endif %}
                                             {% endfor %}            								                                           				
                                         </div>
@@ -218,7 +207,6 @@
                 <a class="btn-more" href="">More Products</a>
             </div>
         </div><br>
-
         <div class="container">
             <div class="main-card">
                 <div class="product-item">
@@ -231,9 +219,7 @@
                                 <!-- Wrapper for carousel items -->
                                 <div class="carousel-inner">
                                     <div class="item carousel-item active">
-                                        <div class="row">
-                                            
-                                            
+                                        <div class="row">  
                                             {% for product in products %}
                                                 {% if product.tag == 'Hot Sale' %}
                                                     <div class="col-sm-3">
@@ -245,7 +231,6 @@
                                                             <div class="thumb-content">
                                                                 <h4>{{product.name | truncatechars:37}}</h4>									
                                                                 <p class="item-price"><b>Ksh. {{product.price}}</b></p>
-                                                                
                                                                 {% if product.quantity <= 0 %}
                                                                     <p> Out Of Stock </p>
                                                                 {% else %}
@@ -254,7 +239,6 @@
                                                             </div>						
                                                         </div>
                                                     </div>
-                                               
                                                 {% endif %}
                                             {% endfor %}            								                                           				
                                         </div>
@@ -268,7 +252,6 @@
                 <a class="btn-more" href="">More Products</a>
             </div>
         </div><br>
-
         <div class="container">
             <div class="main-card">
                 <div class="product-item">
@@ -282,8 +265,6 @@
                                 <div class="carousel-inner">
                                     <div class="item carousel-item active">
                                         <div class="row">
-                                            
-                                            
                                             {% for product in products %}
                                                 {% if product.tag == 'Latest Products' %}
                                                     <div class="col-sm-3">
@@ -304,7 +285,6 @@
                                                             </div>						
                                                         </div>
                                                     </div>
-                                               
                                                 {% endif %}
                                             {% endfor %}            								                                           				
                                         </div>
@@ -318,8 +298,5 @@
                 <a class="btn-more" href="">More Products</a>
             </div>
         </div><br>
-
-       
-        
         </div><br><br>
 {% endblock content %}

@@ -2,7 +2,6 @@
 <script src="https://kit.fontawesome.com/415119f36a.js" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-A3rJD856KowSb7dwlZdYEkO39Gagi7vIsF0jrRAoQmDKKtQBHUuLZ9AsSv4jD4Xa" crossorigin="anonymous"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-
 <script>
     function getCookie(name) {
         var cookieValue = null;
@@ -19,7 +18,6 @@
         }
         return cookieValue;
     }
-    
     function uuidv4() {
         return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
             var r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);
@@ -27,18 +25,15 @@
         });
     }
     let device = getCookie('device')
-    
     if (device == null || device == undefined) {
         device = uuidv4()
     }
     document.cookie = 'device=' + device + ";domain=;path=/"    
 </script>
-
 <script>
     const productList = document.getElementById('productList');
     const searchBar = document.getElementById('searchBar');
     let allProducts = [];
-
     searchBar.addEventListener('keyup', (e) => {
         const searchString = e.target.value.toLowerCase();
         const filteredProducts = allProducts.filter((product) => {
@@ -49,7 +44,6 @@
         });
         displayProducts(filteredProducts, searchString);
     });
-
     const loadProducts = async () => {
         try {
             const res = await fetch('{% url "shop:search" %}');
@@ -58,7 +52,6 @@
             console.error(err);
         }
     };
-
     const displayProducts = (products, searchString) => {
         const htmlString = products
             .map((product) => {
@@ -92,6 +85,5 @@
             x.style.display = 'none';
         }
         })
-
     });
 </script>

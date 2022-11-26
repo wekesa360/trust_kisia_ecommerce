@@ -1,7 +1,5 @@
 {% extends 'base.html' %}
-
 {% block content %}
-
 <div class="container">
     <div class="">
         <div class="product-item">
@@ -24,7 +22,6 @@
                                                     <div class="thumb-content">
                                                         <h4>{{product.name | truncatechars:37}}</h4>									
                                                         <p class="item-price"><b>Ksh. {{product.price}}</b></p>
-                                                        
                                                         {% if product.quantity <= 0 %}
                                                             <p> Out Of Stock </p>
                                                         {% else %}

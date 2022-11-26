@@ -10,7 +10,7 @@ from django.core.files import File
 from phonenumber_field.modelfields import PhoneNumberField
 # Create your models here.
 
-
+base_url = '127.0.01:8000'
 class Category(models.Model):
     category_name = models.CharField(max_length=200, unique=False, blank=False)
     sub_category = models.CharField(max_length=200, unique=False )
@@ -34,7 +34,6 @@ class Product(models.Model):
         ('Featured', 'Featured'),
         ('Latest Products', 'Latest Products')
     )
-    
     name = models.CharField(max_length=200)
     category  = models.ForeignKey(Category, blank=False, unique=False, on_delete=models.CASCADE)
     brand = models.CharField(max_length=256)
@@ -52,18 +51,15 @@ class Product(models.Model):
         self.slug = slugify(self.name)
         super(Product, self).save(*args, **kwargs)
 
- 
     def __str__(self) -> str:
         return self.name
-    
-    
-    
+
     def get_absolute_url(self):
-        return f'http://127.0.0.1:8000/{self.category.pk}/{self.slug}/'
+        return f'{base_url}/{self.category.pk}/{self.slug}/'
     
     def get_thumbnail(self):
         if self.thumbnail:
-            return 'http://127.0.0.1:8000' + self.thumbnail.url
+            return f'{base_url}{self.thumbnail.url}'
         else:
             return ''
         
@@ -73,7 +69,7 @@ class Product(models.Model):
     
     def get_product_image_url(self):
         print(ProductImage.objects.filter(product_id=self.pk).all()[1].image.url)
-        url = "http://127.0.0.1:8000/{}".format(ProductImage.objects.filter(product_id=self.pk).first().image.url)
+        url = "{}/{}".format(base_url, ProductImage.objects.filter(product_id=self.pk).first().image.url)
         return url
     
     def get_all_product_images(self):
@@ -95,8 +91,7 @@ class Product(models.Model):
         
         thumbnail = File(thumb_io, name=image_file.name)
         
-        return thumbnail
-    
+        return thumbnail 
     
     class Meta:
         db_table = 'products'
@@ -110,7 +105,7 @@ class ProductImage(models.Model):
         return self.product.name
     
     def get_absolute_url(self):
-        return 'http://127.0.0.1:8000' + self.image.url
+        return f'{base_url}{self.image.url}'
     
     class Meta:
         db_table = 'product_images'
@@ -189,7 +184,6 @@ class Order(models.Model):
         ('Delivered', 'Delivered'),
         ('Cancelled', 'Cancelled'),
     )
-    
     customer = models.ForeignKey(Customer, on_delete=models.CASCADE)
     products = models.ManyToManyField(OrderItem)
     status = models.CharField(max_length=100, choices=STATUS_CHOICES, default='Pending', blank=True)
@@ -216,6 +210,3 @@ class Order(models.Model):
     
     class Meta:
         db_table = 'orders'
-
-
-

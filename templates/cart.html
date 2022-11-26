@@ -1,5 +1,4 @@
 {% extends 'base.html' %}
-
 {% block content %}
 <div id="cart-page">
     <div class="cart-section">
@@ -11,9 +10,7 @@
                                 <div class="col"><h4><b>Shopping Cart</b></h4></div>
                                 <div class="col align-self-center text-right text-muted">{{object.get_total_no_items}} items</div>
                             </div>
-                        </div>    
-
-                        
+                        </div> 
                         {% for product in object.products.all %}
                         <div class="row border-top border-bottom">
                             <div class="row main align-items-center">
@@ -22,29 +19,18 @@
                                     <div class="row text-muted">{{product.product.name}}</div>
                                     {% comment %} <div class="row">short description</div> {% endcomment %}
                                 </div>
-                                
-                                
                                 <div class="col">
                                     <a href="{% url 'shop:reduce-quantity-item' product.product.slug %}"> - </a>
                                     <a href="" class="border">{{product.quantity}}</a>
                                     <a href="{% url 'shop:add-to-cart' product.product.slug %}"> + </a>
                                 </div>
                                 <div class="col">Ksh. {{product.get_final_price}} <a href="{% url 'shop:remove-from-cart' product.product.slug %}"><span class="close">&#10005;</span></a></div>
-                   
                                 <div class="col">
-                                    
                                 </div>
                                 <div class="col"><a href="{% url 'shop:remove-from-cart' product.product.slug %}"><span class="close">&#10005;</span></a></div>
-                      
-                                    
-                                
                             </div>
                         </div> 
                         {% endfor %}
-                            
-                        
-                        
-                        
                         <div class="back-to-shop"><a href="#">&leftarrow;</a><span class="text-muted">Back to shop</span></div>
                     </div>
                     <div class="col-md-3 summary">
@@ -60,11 +46,7 @@
                         <a href="{% url 'shop:checkout' %}"><button class="btn">CHECKOUT</button></a>
                     </div>
                 </div>
-                
             </div>
-    
         </div>
 </div>
-        
-        
 {% endblock content %}

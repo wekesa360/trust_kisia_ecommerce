@@ -1,4 +1,3 @@
-from email import header
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib import messages
 from django.core.exceptions import ObjectDoesNotExist 
@@ -13,7 +12,6 @@ from .models import (
     Order,
     Customer
 )
-
 
 def category_view(request):
     """The home view where
@@ -34,12 +32,10 @@ def product_view(request, slug):
     product = get_object_or_404(Product, slug=slug)
     return render(request, 'product-details.html', context= {'product': product})
 
-
 def search_view(request):
     qs = Product.objects.all()
     response = serializers.serialize('json', qs)
-    return HttpResponse(response, content_type='application/json')
-    
+    return HttpResponse(response, content_type='application/json') 
 
 def category_products_view(request, slug):
     """products rendered based on category.
@@ -58,7 +54,6 @@ def category_products_view(request, slug):
             return render(request, 'product.html', context= {'products': products})
     except ObjectDoesNotExist:
         return redirect('shop:home')
-    
 
 def add_to_cart(request, slug):
     product = get_object_or_404(Product, slug=slug)
@@ -71,7 +66,6 @@ def add_to_cart(request, slug):
         # ordered=False,
     )
     order_qs = Order.objects.filter(customer=customer, ordered=False)
-    
     if order_qs.exists():
         order = order_qs[0]
         if order.products.filter(product__pk=product.pk).exists():
@@ -91,7 +85,6 @@ def add_to_cart(request, slug):
         messages.info(request,'Item added to your cart')
         return redirect('shop:order-summary')
  
-
 def order_summary_view(request):
     try:
         device = request.COOKIES['device']
@@ -106,7 +99,6 @@ def order_summary_view(request):
         messages.error(request, 'You do not have an order')
         return redirect('/')
 
-   
 def remove_from_cart(request, slug):
     product = get_object_or_404(Product, slug=slug)
     device = request.COOKIES['device']
@@ -165,7 +157,6 @@ def reduce_quantity_item(request, slug):
         messages.info(request, 'You do not have an order')
         return redirect('shop:order-summary')
 
-
 def checkout_view(request):
     if request.method == 'GET':
         form = CheckoutForm()
@@ -184,14 +175,11 @@ def checkout_view(request):
             'object': order
         }
         return render(request, 'checkout.html', context)
-
     if request.method == 'POST':
         device = request.COOKIES['device']
         customer = Customer.objects.get_or_create(device=device)
         customer= get_object_or_404(Customer, device=device)
         form = CheckoutForm(request.POST or None)
-        
-
         if form.is_valid():
             customer.first_name = form.cleaned_data.get('first_name')
             customer.last_name = form.cleaned_data.get('last_name')
@@ -207,5 +195,4 @@ def checkout_view(request):
             order = get_object_or_404(Order, customer=customer)
             order.ordered = True
             order.save()
-        
         return render(request, 'success.html')

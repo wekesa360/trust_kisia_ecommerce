@@ -9,11 +9,8 @@ from .views import (
     order_summary_view,
     product_view,
     search_view
-
 )
-
 app_name = 'shop'
-
 urlpatterns = [
     path('', category_view, name='home'),
     path('products/<str:slug>/',category_products_view, name='products'),
@@ -24,5 +21,4 @@ urlpatterns = [
     path('add-to-cart/<str:slug>/', add_to_cart, name='add-to-cart'),
     path('remove-from-cart/<str:slug>/', remove_from_cart, name='remove-from-cart'),
     path('reduce-quantity-item/<str:slug>/', reduce_quantity_item, name='reduce-quantity-item')
-    
 ]
