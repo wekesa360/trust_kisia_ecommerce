@@ -10,7 +10,7 @@ from django.core.files import File
 from phonenumber_field.modelfields import PhoneNumberField
 # Create your models here.
 
-base_url = '127.0.01:8000'
+base_url = 'http://127.0.0.1:8000'
 class Category(models.Model):
     category_name = models.CharField(max_length=200, unique=False, blank=False)
     sub_category = models.CharField(max_length=200, unique=False )
@@ -37,8 +37,8 @@ class Product(models.Model):
     name = models.CharField(max_length=200)
     category  = models.ForeignKey(Category, blank=False, unique=False, on_delete=models.CASCADE)
     brand = models.CharField(max_length=256)
-    key_features = models.CharField(max_length=256000)
-    description = models.TextField(max_length=25600000)
+    key_features = models.TextField()
+    description = models.TextField()
     price = models.DecimalField(decimal_places=0, max_digits=10)
     discount = models.DecimalField(decimal_places=0, max_digits=10)
     tag = models.CharField(max_length=100, choices=TAGS_CHOICES, blank=True)
@@ -69,7 +69,7 @@ class Product(models.Model):
     
     def get_product_image_url(self):
         print(ProductImage.objects.filter(product_id=self.pk).all()[1].image.url)
-        url = "{}/{}".format(base_url, ProductImage.objects.filter(product_id=self.pk).first().image.url)
+        url = "{}{}".format(base_url, ProductImage.objects.filter(product_id=self.pk).first().image.url)
         return url
     
     def get_all_product_images(self):
