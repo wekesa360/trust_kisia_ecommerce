@@ -25,6 +25,7 @@
         });
     }
     let device = getCookie('device')
+
     if (device == null || device == undefined) {
         device = uuidv4()
     }
@@ -74,7 +75,6 @@
 </script>
 <script>
     $ (document).ready(function () {
-        console.log('Hello World')
         const searchBar = document.getElementById('searchBar');
         searchBar.addEventListener('keyup', () => {
         var x = document.getElementById('searchList')
@@ -84,6 +84,21 @@
         else {
             x.style.display = 'none';
         }
-        })
+    })
+
+    $.ajax({
+        url: "{% url 'shop:persists' %}",
+        // on success
+        success: function (response) {
+            console.log(response)
+            
+        },
+        // on error
+        error: function (response) {
+            // alert the error if any error occured
+            console.log(response.responseJSON.errors)
+        }
+    });
+
     });
 </script>
