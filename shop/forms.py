@@ -28,7 +28,7 @@ class CheckoutForm(forms.Form):
         'class': 'form-control',
         'id': 'address'
     }))    
-    captcha = ReCaptchaField(widget=ReCaptchaV2Checkbox)
+    # captcha = ReCaptchaField(widget=ReCaptchaV2Checkbox)
     
     
     
