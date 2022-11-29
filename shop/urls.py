@@ -8,7 +8,8 @@ from .views import (
     checkout_view,
     order_summary_view,
     product_view,
-    search_view
+    search_view,
+    persists_view
 )
 app_name = 'shop'
 urlpatterns = [
@@ -17,6 +18,7 @@ urlpatterns = [
     path('product-details/<str:slug>/',product_view, name='product-details'),
     path('order-summary/', order_summary_view, name='order-summary'),
     path('checkout/', checkout_view, name='checkout'),
+    path('persists-data/', persists_view, name='persists'),
     path('search-product', search_view, name='search'),
     path('add-to-cart/<str:slug>/', add_to_cart, name='add-to-cart'),
     path('remove-from-cart/<str:slug>/', remove_from_cart, name='remove-from-cart'),
