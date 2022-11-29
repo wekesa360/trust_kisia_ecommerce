@@ -1,4 +1,3 @@
-from enum import unique
 from urllib.parse import MAX_CACHE_SIZE
 import uuid
 from django.db import models
@@ -52,7 +51,7 @@ class Product(models.Model):
         super(Product, self).save(*args, **kwargs)
 
     def __str__(self) -> str:
-        return self.name
+        return self.slug
 
     def get_absolute_url(self):
         return f'{base_url}/{self.category.pk}/{self.slug}/'
@@ -110,15 +109,10 @@ class ProductImage(models.Model):
     class Meta:
         db_table = 'product_images'
 
-
-
 class DeliveryCharges(models.Model):
     county = models.CharField(max_length=256)
     specific_location = models.CharField(max_length=256)
     fee = models.PositiveBigIntegerField()
-    
-    def __str__(self):
-        return self.specific_pickup_point
     
     class Meta:
         db_table = 'shipping_charges'
@@ -128,7 +122,7 @@ class Customer(models.Model):
     first_name = models.CharField(max_length=80, null=True)
     last_name = models.CharField(max_length=80, null=True)
     phone_number = PhoneNumberField(null=True)
-    device = models.CharField(max_length=256)
+    device = models.CharField(max_length=256, unique=False)
     email = models.EmailField(null=True)
     ordered = models.BooleanField(default=False)
     delivery_address = models.CharField(max_length=80, blank=False, unique=False, null=True)
@@ -143,7 +137,7 @@ class Customer(models.Model):
 
 
 class OrderItem(models.Model):
-    product = models.ForeignKey(Product, blank=False, unique=False, on_delete=models.CASCADE)
+    product = models.ForeignKey(Product, blank=False, unique=False, on_delete=models.DO_NOTHING)
     quantity = models.IntegerField(default=1)
     customer = models.ForeignKey(Customer, blank=True, on_delete=models.CASCADE)
     ordered = models.BooleanField(default=False)
@@ -185,11 +179,11 @@ class Order(models.Model):
         ('Cancelled', 'Cancelled'),
     )
     customer = models.ForeignKey(Customer, on_delete=models.CASCADE)
-    products = models.ManyToManyField(OrderItem)
+    products = models.ManyToManyField(OrderItem, related_name='products')
     status = models.CharField(max_length=100, choices=STATUS_CHOICES, default='Pending', blank=True)
     ordered_date = models.DateTimeField()
     ordered= models.BooleanField(default=False)
-    order_id = models.UUIDField(default=uuid.uuid4, unique=True, db_index=True, editable=False)
+    uuid = models.UUIDField(default=uuid.uuid4(), unique=True, editable=False)
     
     def get_total_price(self):
         total = 0
@@ -198,7 +192,7 @@ class Order(models.Model):
         return total # + self.customer.delivery_address.fee
 
     def __str__(self):
-        username = f'{self.customer.first_name} {self.customer.last_name} complete order - {self.ordered}'
+        username = f'{self.customer.first_name} {self.customer.last_name} - Order id: {self.uuid}'
         return username
     
     def get_total_no_items(self):
@@ -210,3 +204,31 @@ class Order(models.Model):
     
     class Meta:
         db_table = 'orders'
+
+
+class EmailDispatch(models.Model):
+    email = models.TextField()
+    name = models.CharField(max_length=256)
+    subject = models.CharField(max_length=526)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self) -> str:
+        return self.email
+
+
+    class Meta:
+        db_table = 'email_dispatches'
+
+class ProcessOrder(models.Model):
+    order = models.ForeignKey(Order, on_delete=models.CASCADE)
+    cancel_order = models.BooleanField(default=False)
+    total_charges = models.PositiveIntegerField(default=0, blank=True)
+    payment_transacted = models.BooleanField(default=False)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self) -> str:
+        return f'{self.order.uuid}'
+    
+    class Meta:
+        db_table = 'process_orders'
+
