@@ -1,10 +1,11 @@
 
 from django import forms
 from captcha.fields import ReCaptchaField
+from .models import DeliveryCharges
 from captcha.widgets import ReCaptchaV2Checkbox
 
-
 class CheckoutForm(forms.Form):
+    # print(choices)
     first_name = forms.CharField(max_length=50, required=True, widget=forms.TextInput(attrs={
         'class': 'form-control',
         'placeholder': 'first',
@@ -24,8 +25,7 @@ class CheckoutForm(forms.Form):
         'class': 'form-control',
         'placeholder': '+254xxxxxxxxx',
     }))
-    delivery_address = forms.CharField(widget=forms.TextInput(attrs={
-        'class': 'form-control',
+    delivery_address = forms.ModelChoiceField(queryset=DeliveryCharges.objects.all(), widget=forms.Select(attrs={
         'id': 'address'
     }))    
     # captcha = ReCaptchaField(widget=ReCaptchaV2Checkbox)
