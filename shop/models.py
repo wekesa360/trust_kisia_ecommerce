@@ -1,4 +1,3 @@
-from urllib.parse import MAX_CACHE_SIZE
 import uuid
 from django.db import models
 from django.utils.text import slugify
@@ -6,6 +5,7 @@ from PIL import Image
 from io import BytesIO
 from django.urls import reverse
 from django.core.files import File
+from .counties import COUNTIES_CHOICES
 from phonenumber_field.modelfields import PhoneNumberField
 # Create your models here.
 
@@ -110,10 +110,12 @@ class ProductImage(models.Model):
         db_table = 'product_images'
 
 class DeliveryCharges(models.Model):
-    county = models.CharField(max_length=256)
+    county = models.CharField(max_length=256, choices=COUNTIES_CHOICES)
     specific_location = models.CharField(max_length=256)
     fee = models.PositiveBigIntegerField()
     
+    def __str__(self):
+        return f'{self.specific_location}, {self.county} - Ksh. {self.fee}'
     class Meta:
         db_table = 'shipping_charges'
 
@@ -125,7 +127,8 @@ class Customer(models.Model):
     device = models.CharField(max_length=256, unique=False)
     email = models.EmailField(null=True)
     ordered = models.BooleanField(default=False)
-    delivery_address = models.CharField(max_length=80, blank=False, unique=False, null=True)
+    delivery_address = models.ForeignKey(DeliveryCharges, on_delete=models.DO_NOTHING, default=1)
+    # delivery_address = models.CharField(max_length=80, blank=False, unique=False, null=True)
     
     def __str__(self) -> str:
         full_name = f'{self.first_name}  {self.last_name}'
@@ -181,7 +184,7 @@ class Order(models.Model):
     customer = models.ForeignKey(Customer, on_delete=models.CASCADE)
     products = models.ManyToManyField(OrderItem, related_name='products')
     status = models.CharField(max_length=100, choices=STATUS_CHOICES, default='Pending', blank=True)
-    ordered_date = models.DateTimeField()
+    ordered_date = models.DateField()
     ordered= models.BooleanField(default=False)
     uuid = models.UUIDField(default=uuid.uuid4(), unique=True, editable=False)
     
