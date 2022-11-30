@@ -1,6 +1,7 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib import messages
-import uuid
+import uuid as unique_gen
+import json
 from django.core.exceptions import ObjectDoesNotExist 
 from django.utils import timezone
 from django.core import serializers
@@ -12,9 +13,9 @@ from .models import (
     OrderItem,
     Order,
     Customer,
-    ProcessOrder
+    ProcessOrder,
+    DeliveryCharges
 )
-
 
 def category_view(request):
     """The home view where
@@ -60,7 +61,7 @@ def category_products_view(request, slug):
 def add_to_cart(request, slug):
     product = get_object_or_404(Product, slug=slug)
     device = request.COOKIES['device']
-    customer = Customer.objects.create(device=device)
+    customer = Customer.objects.get_or_create(device=device)
     customer= get_object_or_404(Customer, device=device)
     order_item, created = OrderItem.objects.get_or_create(
         product=product,
@@ -89,7 +90,11 @@ def add_to_cart(request, slug):
                 return redirect('shop:order-summary')   
         else:
             ordered_date = timezone.now()
-            order = Order.objects.create(customer=customer, ordered_date=ordered_date)
+            try:
+                order = Order.objects.get(customer=customer, ordered_date=ordered_date)
+            except ObjectDoesNotExist:
+                uuid = unique_gen.uuid4()
+                order = Order.objects.create(customer=customer, ordered_date=ordered_date, uuid=uuid)
             order.products.add(order_item)
             product.quantity -= 1
             product.save()
@@ -123,16 +128,18 @@ def persists_view(request):
         HttpResponse: response( JSON format)
     """
     try: 
-        qs = Customer.objects.get(device=request.COOKIES['device'])
+        device=request.COOKIES['device']
+        qs = Customer.objects.get(device=device)
+        ordered = Order.objects.get(customer__device=device)
         if qs:
-            if qs.email == None:
+            if qs.email == None and ordered.ordered != True:
                 qs = {'value':False}
             else:
                 qs = {'value':True}
     except ObjectDoesNotExist:
-        qs = {'value':True}
+        qs = {'value':False}
+    qs = json.dumps(qs)
     response = qs
-    print(qs)
     return HttpResponse(response, content_type='application/json')
 
 def remove_from_cart(request, slug):
@@ -232,7 +239,7 @@ def checkout_view(request):
         if customer.ordered == True:
             order = get_object_or_404(Order, customer=customer, ordered=False)
             order.ordered = True
-            order.uuid=uuid.uuid4()
+            order.uuid=unique_gen.uuid4()
             order.save()
             if order.ordered == True:
                 ordered_item = OrderItem.objects.filter(customer=order.customer, ordered=False)
@@ -243,3 +250,18 @@ def checkout_view(request):
                     order=order,
                 )
         return render(request, 'success.html')
+
+def cancel_order_view(request,  order_id):
+    order_id = unique_gen.UUID(order_id)
+    if request.method == 'POST':
+        process_order = get_object_or_404(ProcessOrder,order__uuid=order_id)
+        if process_order:
+            process_order.cancel_order = True
+            process_order.save()
+        else:
+            messages.error(request,'Order does not exist! ')
+            return render(request, 'cancel-order.html')
+        messages.info(request,'Order Cancelled successfully! ')
+        return render(request, 'cancel-order.html')
+    else:
+        return render(request, 'cancel-order.html')
