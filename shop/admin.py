@@ -7,7 +7,9 @@ from .models import (
     DeliveryCharges,
     Customer,
     ProductImage,
-    ProcessOrder
+    ProcessOrder,
+    CancelledOrder,
+    EmailDispatch
 )
 @admin.register(Order)
 class OrderAdmin(admin.ModelAdmin):
@@ -23,10 +25,10 @@ class DeliveryCharges(admin.ModelAdmin):
     list_display = ('county', 'specific_location', 'fee')
 @admin.register(Customer)
 class CustomerAdmin(admin.ModelAdmin):
-    list_display = ('phone_number', 'email', 'ordered')
+    list_display = ('first_name','device', 'phone_number', 'email', 'ordered')
 @admin.register(ProcessOrder)
 class ProcessOrderAdmin(admin.ModelAdmin):
-    list_display = ('order', 'total_charges', 'payment_transacted')
+    list_display = ('order', 'total_charges', 'payment_transacted', 'cancel_order')
 class PictureInline(admin.TabularInline):
     model = ProductImage
     
@@ -34,3 +36,11 @@ class PictureInline(admin.TabularInline):
 class ProductAdmin(admin.ModelAdmin):
     inlines = [PictureInline]
     list_display = ('name', 'quantity', 'brand', 'price', 'tag', 'category')
+
+@admin.register(CancelledOrder)
+class CancelledOrderAdmin(admin.ModelAdmin):
+    list_display = ('customer_name', 'customer_email', 'order_id', 'products_order', 'order_cancelled')
+
+@admin.register(EmailDispatch)
+class EmailDispatchAdmin(admin.ModelAdmin):
+    list_display = ('name', 'email', 'subject')
