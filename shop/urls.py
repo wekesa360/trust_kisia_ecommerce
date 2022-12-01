@@ -9,7 +9,8 @@ from .views import (
     order_summary_view,
     product_view,
     search_view,
-    persists_view
+    persists_view,
+    cancel_order_view
 )
 app_name = 'shop'
 urlpatterns = [
@@ -22,5 +23,6 @@ urlpatterns = [
     path('search-product/', search_view, name='search'),
     path('add-to-cart/<str:slug>/', add_to_cart, name='add-to-cart'),
     path('remove-from-cart/<str:slug>/', remove_from_cart, name='remove-from-cart'),
-    path('reduce-quantity-item/<str:slug>/', reduce_quantity_item, name='reduce-quantity-item')
+    path('reduce-quantity-item/<str:slug>/', reduce_quantity_item, name='reduce-quantity-item'),
+    path('trustkisia/order/cancel-order/<str:order_id>/', cancel_order_view, name='cancel-order')
 ]
