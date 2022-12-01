@@ -235,3 +235,18 @@ class ProcessOrder(models.Model):
     class Meta:
         db_table = 'process_orders'
 
+class CancelledOrder(models.Model):
+    customer_name = models.CharField(max_length=256)
+    customer_email = models.EmailField()
+    order_id = models.CharField(max_length=100)
+    products_order = models.TextField()
+    order_cancelled = models.BooleanField()
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return self.customer_name
+
+    
+    class Meta:
+        db_table = 'cancelled_orders'
+
