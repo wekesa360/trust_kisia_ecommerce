@@ -37,14 +37,14 @@
                       </tr>
                     </thead>
                     <tbody>
+                      {% for product in products %}
                       <tr>
-                        {% for product in products %}
-                            <th scope="row"></th>
-                            <td>{{product.product}}</td>
-                            <td>{{product.quantity}}</td>
-                            <td>{{product.get_final_price|intcomma}}</td>
-                        {% endfor %} 
+                          <th scope="row"></th>
+                          <td>{{product.product}}</td>
+                          <td>{{product.quantity}}</td>
+                          <td>{{product.get_final_price|intcomma}}</td>
                       </tr>
+                      {% endfor %} 
                       <tr>
                             <th scope="row"></th>
                             <td></td>
@@ -63,8 +63,7 @@
         <p>Thank you for trusting TRUSTKISIA</p>
         <p>You're receiving this email because you placed an order with trustkisia technologies.</a></p>
     
-        <p><a href="#"><b>CANCEL ORDER</b></a></p>
-
+        <p><a href="http://127.0.0.1:8000/trustkisia/order/cancel-order/{{order_id}}/"><b>CANCEL ORDER</b></a></p>
         logo
         <img src="">
         
