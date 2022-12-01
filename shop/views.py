@@ -14,7 +14,8 @@ from .models import (
     Order,
     Customer,
     ProcessOrder,
-    DeliveryCharges
+    DeliveryCharges,
+    CancelledOrder
 )
 
 def category_view(request):
@@ -253,15 +254,35 @@ def checkout_view(request):
 
 def cancel_order_view(request,  order_id):
     order_id = unique_gen.UUID(order_id)
-    if request.method == 'POST':
+    if request.method == 'GET':
         process_order = get_object_or_404(ProcessOrder,order__uuid=order_id)
         if process_order:
             process_order.cancel_order = True
             process_order.save()
+        if process_order.cancel_order == True:
+            cancelled_order = CancelledOrder()
+            customer = process_order.order.customer
+            cancelled_order.customer_name = f'{customer.first_name} {customer.last_name}'
+            cancelled_order.customer_email = customer.email
+            cancelled_order.order_cancelled = True
+            cancelled_order.order_id = str(order_id)
+            products = []
+            for product_order_item in process_order.order.products.all():
+                products.append(product_order_item.product)
+                # Supposed to be a cron job or signal --- all quanatity 
+                p_product = get_object_or_404(Product, slug=product_order_item.product.slug)
+                p_product.quantity =   p_product.quantity + product_order_item.quantity
+                p_product.save()
+                print(product_order_item.quantity)
+            cancelled_order.products_order = products
+            cancelled_order.save()
+            customer_device = customer.device
+            customer_record = Customer.objects.get(device=customer_device)
+            customer_record.delete()
         else:
             messages.error(request,'Order does not exist! ')
-            return render(request, 'cancel-order.html')
-        messages.info(request,'Order Cancelled successfully! ')
-        return render(request, 'cancel-order.html')
+            return render(request, 'success-order-cancel.html')
+        messages.info(request,'Order Cancelled')
+        return render(request, 'success-order-cancel.html')
     else:
-        return render(request, 'cancel-order.html')
+        return render(request, 'success-order-cancel.html')
