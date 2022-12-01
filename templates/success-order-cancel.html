@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+{% block content %}
+        <section class="main-content">
+        <div class="container">
+                <br>
+                <br>
+                <div class="row">
+                        <div class="col-sm-6 col-md-4">
+                                
+                        </div>
+                        <div class="col-sm-6 col-md-4">
+                                <div class="info-card info-card--success">
+                                        <div class="info-card_icon">
+                                                <img class="info-card_img-icon" src="../static/img/success.svg" alt="success">
+                                        </div>
+                                        <h2 class="info-card_label">Order Cancelled Successfully</h2>
+                                        <div class="info-card_message">Continue shopping with us!</div>
+                                        <a href="{% url 'shop:home' %}"><button class="btn btn-success px-5">Continue</button></a></div>
+                                </div>
+                        </div>
+                        <div class="col-sm-6 col-md-4">
+                        </div>
+                </div>
+        </div>
+</section>
+{% endblock content %}
