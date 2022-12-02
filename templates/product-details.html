@@ -6,13 +6,16 @@
                 <div class="col-md-10">
                     <div class="card">
                         <div class="row">
-                            <div class="col-md-6">
-                                <div class="images p-3">
-                                    <div class="text-center p-4"> <img id="main-image" src="{{product.get_product_image_url}}" width="250" /> </div>
+                            <div class="col-md-6 mt-5 ">
+                                <div class="images p-3 pr-0">
+                                    <div class="text-center pl-5 mb-4 pt-5 main-product-image"> <img id="imageClickAndChange" src="{{product.get_product_image_url}}" width="400" /></div>
                                     <div class="thumbnail text-center"> 
+                                    <script>var images = []; </script>
                                     {% for image in product.get_all_product_images %}
-                                    <img onclick="change_image(this)" src="{{image.image.url}}" width="70">
+                                        <img class="small-img" src="{{image.image.url}}" width="70">
+                                        <script>imageUrl =`{{image.image.url}}`; images.push(imageUrl);</script>
                                     {% endfor %}
+                                    <script> console.log(images);</script>
                                 </div>
                                 </div>
                             </div>
