@@ -4,6 +4,7 @@ from .views import (
     reduce_quantity_item,
     add_to_cart,
     category_products_view,
+    tag_products_view,
     category_view,
     checkout_view,
     order_summary_view,
@@ -16,6 +17,7 @@ app_name = 'shop'
 urlpatterns = [
     path('', category_view, name='home'),
     path('products/<str:slug>/',category_products_view, name='products'),
+    path('product-tags/<str:tag>/',tag_products_view, name='tag-view'),
     path('product-details/<str:slug>/',product_view, name='product-details'),
     path('order-summary/', order_summary_view, name='order-summary'),
     path('checkout/', checkout_view, name='checkout'),
