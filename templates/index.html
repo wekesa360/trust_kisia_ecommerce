@@ -1,281 +1,177 @@
 {% extends 'base.html' %}
 {%load humanize%}
 {% block content %}
-        <main class="container">
-            <div class="row">
-                <div class="col-lg-4">
-                    <nav>
-                        <!-- main navigation -->
-                        <ul class="cat-menu shadow-sm">
-                            <li class="dropdwn"><a href="#">Phones, Tablets & Accessories<i class="fa fa-angle-right fa-pull-right"></i></a>
-                                <ul class="dropdwn-content">
-                                    <li><a href="{%url 'shop:products' 'mobile-phones-smart-phone-new' %}">Smartphones</a></li>
-                                    <li><a href="{%url 'shop:products' 'Tablets' %}">Tablets</a></li>
-                                    <li><a href="{%url 'shop:products' 'Iphones & Ipads' %}">Iphones & Ipads</a></li>
-                                    <li><a href="#">Accessories</a></li>
-                                </ul>
-                            </li>
-                            <li class="dropdwn"><a href="#">Computing<i class="fa fa-angle-right fa-pull-right"></i></a>
-                                    <ul class="dropdwn-content">
-                                        <li><a href="#">Desktop Computers</a></li>
-                                        <li class="dropdwn2">
-                                            <a href="#">Laptops<i class="fa fa-angle-right fa-pull-right"></i></a>
-                                            <ul class="dropdwn-content2">
-                                                <li><a href="{%url 'shop:products' 'computers-laptops-new' %}">New</a></li>
-                                                <li><a href="#">Ex-UK</a></li>
-                                            </ul>
-                                        </li>
-                                        <li><a href="#">Computer Storage</a></li>
-                                        <li><a href="#">Computer Software</a></li>
-                                        <li><a href="#">Computer monitors & Display</a></li>
-                                        <li><a href="#">Computer Accessories</a></li>
-                                    </ul>
-                            </li>
-                            <li class="dropdwn"><a href="#">Electrical Accessories<i class="fa fa-angle-right fa-pull-right"></i></a>
-                                <ul class="dropdwn-content">
-                                    <li><a href="#">Sockets</a></li>
-                                    <li><a href="#">Bulbs</a></li>
-                                    <li><a href="#">Cables</a></li>
-                                </ul>
-                            </li>
-                            <li class="dropdwn"><a href="#">Office tools & stationery<i class="fa fa-angle-right fa-pull-right"></i></a>
-                                <ul class="dropdwn-content">
-                                    <li><a href="#">Blowers</a></li>
-                                    <li><a href="#">Printing Papers</a></li>
-                                    <li><a href="#">Staplers</a></li>
-                                    <li><a href="#">Paper shredders</a></li>
-                                    <li><a href="#">Paper cutter</a></li>
-                                    <li><a href="#">Laminators</a></li>
-                                    <li><a href="#">Binding machines</a></li>
-                                </ul>
-                            </li>
-                            <li class="dropdwn"><a href="#"></i>Home Entertainment<i class="fa fa-angle-right fa-pull-right"></i></a>
-                                <ul class="dropdwn-content">
-                                    <li><a href="#">TVs</a></li>
-                                    <li><a href="#">Smart Home devices</a></li>
-                                    <li><a href="#">Audio & Speakers</a></li>
-                                    <li><a href="#">Video & Audio Accessories</a></li>
-                                </ul>
-                            </li>
-                            <li class="dropdwn"><a href="#"></i>Printers & Scanners<i class="fa fa-angle-right fa-pull-right"></i></a>
-                                <ul class="dropdwn-content">
-                                    <li><a href="#">Scanners</a></li>
-                                    <li><a href="#">Ink & Cartidges</a></li>
-                                    <li class="dropdwn2"><a href="#">Tonners<i class="fa fa-angle-right fa-pull-right"></i></a>
-                                        <ul class="dropdwn-content2">
-                                            <li><a href="#">Compatible</a></li>
-                                            <li><a href="#">Original</a></li>
-                                        </ul>
-                                    </li>
-                                </ul>
-                            </li>
-                            <li class="dropdwn"><a href="#">Security<i class="fa fa-angle-right fa-pull-right"></i></a>
-                                <ul class="dropdwn-content">
-                                    <li><a href="#">CCTV Cameras</a></li>
-                                    <li><a href="#">CCTV Accessories</a></li>
-                                    
-                                </ul>
-                            </li>
-                            <li class="dropdwn"><a href="#">Gaming<i class="fa fa-angle-right fa-pull-right"></i></a>
-                                <ul class="dropdwn-content">
-                                    <li><a href="#">Consoles</a></li>
-                                    <li><a href="#">Gaming Mouse & Keyboard</a></li>
-                                    <li><a href="#">Gaming Headphones</a></li>
-                                    <li><a href="#">Gaming Accessories</a></li>
-                                </ul>
-                            </li>
-                            <li class="dropdwn"><a href="#">Microsoft Productss<i class="fa fa-angle-right fa-pull-right"></i></a>
-                                <ul class="dropdwn-content">
-                                    <li><a href="#">Surface Pro</a></li>
-                                    <li><a href="#">Microsoft Pen</a></li>
-                                    <li><a href="#">Microsoft Keyboard</a></li>
-                                    <li><a href="#">Microsoft arc Mouse</a></li>
-                                </ul>
-                            </li>
-                            <li class="dropdwn"><a href="#">Kitchen & Small Home Appliances<i class="fa fa-angle-right fa-pull-right"></i></a>
-                                <ul class="dropdwn-content">
-                                    <li><a href="#">Microwave</a></li>
-                                    <li><a href="#">Blenders</a></li>
-                                    <li><a href="#">Kettles</a></li>
-                                    <li><a href="#">Ironboxes</a></li>
-                                    <li><a href="#">Refrigirators</a></li>
-                                    <li><a href="#">Cookers</a></li>
-                                    <li><a href="#">Rice Cookers</a></li>
-                                </ul>
-                            </li>
-                            <li class="dropdwn"><a href="#">Household Items<i class="fa fa-angle-right fa-pull-right"></i></a>
-                                <ul class="dropdwn-content">
-                                    <li><a href="#">Furniture</a></li>
-                                    <li><a href="#">Rugs & Carpets</a></li>
-                                    <li><a href="#">Household Utilities</a></li>  
-                                </ul>
-                            </li>
-                            <li><a href="#">Service and Repairs</a></li>
-                            <li class="dropdwn"><a href="#">Gas Accessories<i class="fa fa-angle-right fa-pull-right"></i></a>
-                                <ul class="dropdwn-content">
-                                    <li><a href="#">Burners</a></li>
-                                    <li><a href="#">Regulators</a></li>
-                                    <li><a href="#">Pipes</a></li>
-                                </ul>
-                            </li>
-                            <li class="dropdwn"><a href="#">Energy<i class="fa fa-angle-right fa-pull-right"></i></a>
-                                <ul class="dropdwn-content">
-                                    <li><a href="#">Batteries</a></li>
-                                    <li><a href="#">Gas</a></li>
-                                    <li><a href="#">Jikos</a></li>
-                                    <li><a href="#">Solar Panels</a></li>
-                                </ul>
-                            </li>
-                        </ul>
-                    </nav>
-                </div>
-                <div class="col-lg-8">
-                    <!-- Carousel -->
-                    <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="carousel">
-                        <ol class="carousel-indicators">
-                          <li data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" class="active"></li>
-                          <li data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1"></li>
-                          <!-- <li data-bs-target="#carouselExampleIndicators" data-bs-slide-to="2"></li> -->
-                        </ol>
-                        <div class="carousel-inner">
-                          <div class="carousel-item active">
-                            <img class="" height="450" src="../static/img/b1.jpg" alt="First slide">
-                          </div>
-                          <div class="carousel-item">
-                            <img class="" height="450" src="../static/img/b2.jpg" alt="Second slide">
-                          </div>
+<main class="container">
+   <div class="row">
+      <div class="col-lg-4">
+         <nav>
+            <!-- main navigation -->
+            <ul class="cat-menu shadow-sm ">
+               {%for key, value in sub_categories.items %}
+               <div class="dropend">
+                  <li>
+                     <a id="dropdownMenuLink"  style="cursor: pointer; padding-right:55px;" data-bs-toggle="dropdown" >{{key}}</a><i style="opacity: 0.2;" class=' text-muted fa fa-angle-down fa-pull-right'></i>
+                     <ul class="dropdown-menu position-inherit bg-white border-0 rounded-0 w-100 p-3 m-0" aria-labelledby="dropdownMenuLink">
+                        {%for sub_category in value %}
+                        <li class="dropdown-item "><a class="nav-link" href="{% url 'shop:products' sub_category.slug %}" target>{{sub_category}}</a></li>
+                        {%endfor%}
+                     </ul>
+                  </li>
+               </div>
+               {%endfor%}  
+            </ul>
+         </nav>
+      </div>
+      <div class="col-lg-8">
+         <!-- Carousel -->
+         <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="carousel">
+            <ol class="carousel-indicators">
+               <li data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" class="active"></li>
+               <li data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1"></li>
+               <!-- <li data-bs-target="#carouselExampleIndicators" data-bs-slide-to="2"></li> -->
+            </ol>
+            <div class="carousel-inner">
+               <div class="carousel-item active">
+                  <img class="" height="450" src="../static/img/b1.jpg" alt="First slide">
+               </div>
+               <div class="carousel-item">
+                  <img class="" height="450" src="../static/img/b2.jpg" alt="Second slide">
+               </div>
+            </div>
+            <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-bs-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="sr-only">Previous</span>
+            </a>
+            <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-bs-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="sr-only">Next</span>
+            </a>
+         </div>
+      </div>
+      <div class="col-lg-">
+         <!-- poster -->
+      </div>
+   </div>
+</main>
+<main class="container ">
+   <div class="main-card shadow-sm">
+      <div class="product-item">
+         <!-- featured products -->
+         <main class="container ">
+            <h2>Featured <b>Products</b></h2>
+            <div class="product-div">
+               <!-- Wrapper for carousel items -->
+               <div class="item">
+                  <section class="row autoplay">
+                     {% for product in products %}
+                     {% if product.tag == 'Featured' %}
+                     <div class="col-lg-3 col-md-3 col-sm-6 p-0">
+                        <div class="thumb-wrapper">
+                           <div class="img-box">
+                              <a href="{%url 'shop:product-details' product.slug %}">
+                              <img src="{{product.get_product_image_url}}" class="img-fluid" alt="Macbook"></a>  
+                           </div>
+                           <div class="thumb-content">
+                              <h4>{{product.name | truncatechars:37}}</h4>
+                              <p class="item-price"><b>Ksh. {{product.price|intcomma}}</b></p>
+                              {% if product.quantity <= 0 %}
+                              <p> Out Of Stock </p>
+                              {% else %}
+                              <a href="{{ product.get_add_to_cart_url }}" class="btn btn-primary">Add to Cart</a>
+                              {% endif %}
+                           </div>
                         </div>
-                        <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-bs-slide="prev">
-                          <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                          <span class="sr-only">Previous</span>
-                        </a>
-                        <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-bs-slide="next">
-                          <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                          <span class="sr-only">Next</span>
-                        </a>
-                      </div>
-                </div>
-                <div class="col-lg-">
-                    <!-- poster -->
-                </div>
+                     </div>
+                     {% endif %}
+                     {% endfor %}            								                                           				
+                  </section>
+               </div>
             </div>
-        </main>
-        <main class="container ">
-            <div class="main-card shadow-sm">
-                <div class="product-item">
-                    <!-- featured products -->
-                    <main class="container ">
-                                <h2>Featured <b>Products</b></h2>
-                                <div class="product-div">
-                                    <!-- Wrapper for carousel items -->
-                                        <div class="item">
-                                            <section class="row autoplay">
-                                            {% for product in products %}
-                                                {% if product.tag == 'Featured' %}
-                                                    <div class="col-lg-3 col-md-3 col-sm-6 p-0">
-                                                        <div class="thumb-wrapper">
-                                                            <div class="img-box">
-                                                                <a href="{%url 'shop:product-details' product.slug %}">
-                                                                <img src="{{product.get_product_image_url}}" class="img-fluid" alt="Macbook"></a>  
-                                                            </div>
-                                                            <div class="thumb-content">
-                                                                <h4>{{product.name | truncatechars:37}}</h4>									
-                                                                <p class="item-price"><b>Ksh. {{product.price|intcomma}}</b></p>
-                                                                {% if product.quantity <= 0 %}
-                                                                    <p> Out Of Stock </p>
-                                                                {% else %}
-                                                                <a href="{{ product.get_add_to_cart_url }}" class="btn btn-primary">Add to Cart</a>
-                                                                {% endif %}
-                                                            </div>						
-                                                        </div>
-                                                    </div>
-                                                {% endif %}
-                                            {% endfor %}            								                                           				
-                                            </section>
-                                    </div>
-                                </div>
-                    </main>
-                </div>
-                <a class="btn-more" href="">More Products</a>
+         </main>
+      </div>
+      <a class="btn-more" href="{% url 'shop:tag-view' 'Featured' %}">More Products</a>
+   </div>
+</main>
+<br>
+<main class="container ">
+   <div class="main-card shadow-sm">
+      <div class="product-item">
+         <!-- featured products -->
+         <main class="container">
+            <h2>Hot Sale <b>Products</b></h2>
+            <div class="product-div">
+               <!-- Wrapper for carousel items -->
+               <div class="item">
+                  <section class="row autoplay">
+                     {% for product in products %}
+                     {% if product.tag == 'Hot Sale' %}
+                     <div class="col-lg-3 col-md-3 col-sm-6 p-0">
+                        <div class="thumb-wrapper">
+                           <div class="img-box">
+                              <a href="{%url 'shop:product-details' product.slug %}">
+                              <img src="{{product.get_product_image_url}}" class="img-fluid" alt="Macbook"></a>  
+                           </div>
+                           <div class="thumb-content">
+                              <h4>{{product.name | truncatechars:37}}</h4>
+                              <p class="item-price"><b>Ksh. {{product.price|intcomma}}</b></p>
+                              {% if product.quantity <= 0 %}
+                              <p> Out Of Stock </p>
+                              {% else %}
+                              <a href="{{ product.get_add_to_cart_url }}" class="btn btn-primary">Add to Cart</a>
+                              {% endif %}
+                           </div>
+                        </div>
+                     </div>
+                     {% endif %}
+                     {% endfor %}            								                                           				
+                  </section>
+               </div>
             </div>
-        </main><br>
-        <main class="container ">
-            <div class="main-card shadow-sm">
-                <div class="product-item">
-                    <!-- featured products -->
-                    <main class="container">
-                                <h2>Hot Sale <b>Products</b></h2>
-                                <div class="product-div">
-                                    <!-- Wrapper for carousel items -->
-                                        <div class="item">
-                                            <section class="row autoplay">
-                                            {% for product in products %}
-                                                {% if product.tag == 'Hot Sale' %}
-                                                    <div class="col-lg-3 col-md-3 col-sm-6 p-0">
-                                                        <div class="thumb-wrapper">
-                                                            <div class="img-box">
-                                                                <a href="{%url 'shop:product-details' product.slug %}">
-                                                                <img src="{{product.get_product_image_url}}" class="img-fluid" alt="Macbook"></a>  
-                                                            </div>
-                                                            <div class="thumb-content">
-                                                                <h4>{{product.name | truncatechars:37}}</h4>									
-                                                                <p class="item-price"><b>Ksh. {{product.price|intcomma}}</b></p>
-                                                                {% if product.quantity <= 0 %}
-                                                                    <p> Out Of Stock </p>
-                                                                {% else %}
-                                                                <a href="{{ product.get_add_to_cart_url }}" class="btn btn-primary">Add to Cart</a>
-                                                                {% endif %}
-                                                            </div>						
-                                                        </div>
-                                                    </div>
-                                                {% endif %}
-                                            {% endfor %}            								                                           				
-                                        </section>
-                                    </div>
-                                </div>
-                    </main>
-                </div>
-                <a class="btn-more" href="">More Products</a>
+         </main>
+      </div>
+      <a class="btn-more" href="{% url 'shop:tag-view' 'Hot-Sale' %}">More Products</a>
+   </div>
+</main>
+<br>
+<main class="container ">
+   <div class="main-card shadow-sm">
+      <div class="product-item">
+         <!-- featured products -->
+         <main class="container">
+            <h2>Latest <b>Products</b></h2>
+            <div class="product-div">
+               <!-- Wrapper for carousel items -->
+               <div class="item">
+                  <section class="row autoplay">
+                     {% for product in products %}
+                     {% if product.tag == 'Latest Products' %}
+                     <div class="col-lg-3 col-md-3 col-sm-6 p-0">
+                        <div class="thumb-wrapper">
+                           <div class="img-box">
+                              <a href="{%url 'shop:product-details' product.slug %}">
+                              <img src="{{product.get_product_image_url}}" class="img-fluid" alt="Macbook"></a>  
+                           </div>
+                           <div class="thumb-content">
+                              <h4>{{product.name | truncatechars:37}}</h4>
+                              <p class="item-price"><b>Ksh. {{ product.price|intcomma }}</b></p>
+                              {% if product.quantity <= 0 %}
+                              <p> Out Of Stock </p>
+                              {% else %}
+                              <a href="{{ product.get_add_to_cart_url }}" class="btn btn-primary">Add to Cart</a>
+                              {% endif %}
+                           </div>
+                        </div>
+                     </div>
+                     {% endif %}
+                     {% endfor %}            								                                           				
+                  </section>
+               </div>
             </div>
-        </main><br>
-        <main class="container ">
-            <div class="main-card shadow-sm">
-                <div class="product-item">
-                    <!-- featured products -->
-                    <main class="container">
-                                <h2>Latest <b>Products</b></h2>
-                                <div class="product-div">
-                                <!-- Wrapper for carousel items -->
-                                    <div class="item">
-                                        <section class="row autoplay">
-                                            {% for product in products %}
-                                                {% if product.tag == 'Latest Products' %}
-                                                    <div class="col-lg-3 col-md-3 col-sm-6 p-0">
-                                                        <div class="thumb-wrapper">
-                                                            <div class="img-box">
-                                                                <a href="{%url 'shop:product-details' product.slug %}">
-                                                                <img src="{{product.get_product_image_url}}" class="img-fluid" alt="Macbook"></a>  
-                                                            </div>
-                                                            <div class="thumb-content">
-                                                                <h4>{{product.name | truncatechars:37}}</h4>									
-                                                                <p class="item-price"><b>Ksh. {{ product.price|intcomma }}</b></p>
-                                                                {% if product.quantity <= 0 %}
-                                                                    <p> Out Of Stock </p>
-                                                                {% else %}
-                                                                <a href="{{ product.get_add_to_cart_url }}" class="btn btn-primary">Add to Cart</a>
-                                                                {% endif %}
-                                                            </div>						
-                                                        </div>
-                                                    </div>
-                                                {% endif %}
-                                            {% endfor %}            								                                           				
-                                            </section>
-                                    </div>
-                                </div>
-                    </main>
-                </div>
-                <a class="btn-more" href="">More Products</a>
-            </div>
-        </main><br>
-        <br><br>
+         </main>
+      </div>
+      <a class="btn-more" href="{% url 'shop:tag-view' 'Latest-Products' %}">More Products</a>
+   </div>
+</main>
+<br>
+<br><br>
 {% endblock content %}
