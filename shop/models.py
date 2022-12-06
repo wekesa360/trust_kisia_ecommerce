@@ -12,20 +12,32 @@ from phonenumber_field.modelfields import PhoneNumberField
 base_url = 'http://127.0.0.1:8000'
 class Category(models.Model):
     category_name = models.CharField(max_length=200, unique=False, blank=False)
-    sub_category = models.CharField(max_length=200, unique=False )
     slug = models.SlugField(max_length=200, unique=True, blank=True)
-    type = models.CharField(max_length=150, default='new')
     
     def save(self, *args, **kwargs):
-        self.slug = slugify(f'{self.category_name}-{self.sub_category}-{self.type}')
+        self.slug = slugify(f'{self.category_name}')
         super(Category, self).save(*args, **kwargs)
+    
+    def __str__(self) -> str:
+        return self.category_name
+    
+    class Meta:
+        db_table = 'categories'
+
+class SubCategory(models.Model):
+    category = models.ForeignKey(Category, on_delete=models.CASCADE)
+    sub_category = models.CharField(max_length=200, unique=False, blank=False)
+    slug = models.SlugField(max_length=200, unique=True, blank=True)
+    
+    def save(self, *args, **kwargs):
+        self.slug = slugify(f'{self.category.slug}-{self.sub_category}')
+        super(SubCategory, self).save(*args, **kwargs)
     
     def __str__(self) -> str:
         return self.sub_category
     
     class Meta:
-        db_table = 'categories'
-    
+        db_table = 'sub_categories'  
 
 class Product(models.Model):
     TAGS_CHOICES = (
@@ -34,7 +46,7 @@ class Product(models.Model):
         ('Latest Products', 'Latest Products')
     )
     name = models.CharField(max_length=200)
-    category  = models.ForeignKey(Category, blank=False, unique=False, on_delete=models.CASCADE)
+    category  = models.ForeignKey(SubCategory, blank=False, unique=False, on_delete=models.CASCADE)
     brand = models.CharField(max_length=256)
     key_features = models.TextField()
     description = models.TextField()
