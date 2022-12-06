@@ -8,6 +8,7 @@ from django.core import serializers
 from django.http import HttpResponse
 from .forms import CheckoutForm
 from .models import (
+    SubCategory,
     Category,
     Product,
     OrderItem,
@@ -31,9 +32,17 @@ def category_view(request):
     if request.method == 'GET':
         try:
             product_items = Product.objects.all()
+            product_categories = Category.objects.all()
+            product_sub_categories = SubCategory.objects.all()
+            sub_categories = {}
+            for product_category in product_categories:
+                product_sub_categories = SubCategory.objects.filter(category__slug=product_category.slug)
+                sub_categories[product_category] = product_sub_categories
         except ObjectDoesNotExist:
             print("Object does not exist")
-        return render(request, 'index.html', context={'products': product_items})    
+        return render(request, 'index.html', context={'products': product_items,
+                                                    'categories': product_categories, 
+                                                    'sub_categories':sub_categories})    
 
 def product_view(request, slug):
     product = get_object_or_404(Product, slug=slug)
@@ -53,11 +62,27 @@ def category_products_view(request, slug):
     """
     try:
         if request.method == 'GET':
-            category = Category.objects.get(slug=slug)
+            category = SubCategory.objects.get(slug=slug)
             products = Product.objects.all().filter(category=category)
             return render(request, 'product.html', context= {'products': products})
     except ObjectDoesNotExist:
         return redirect('shop:home')
+
+def tag_products_view(request, tag):
+    """products rendered based on product tag.
+
+    Args:
+        request (_type_): _description_
+        slug (_type_): _description_
+    """
+    try:
+        if request.method == 'GET':
+            tag = tag.replace('-', ' ')
+            products = Product.objects.filter(tag=tag)
+            return render(request, 'product.html', context= {'products': products})
+    except ObjectDoesNotExist:
+        return redirect('shop:home')
+
 
 def add_to_cart(request, slug):
     product = get_object_or_404(Product, slug=slug)
