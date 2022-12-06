@@ -2,52 +2,58 @@
 {%load humanize%}
 {% block content %}
 <div id="cart-page">
-    <div class="cart-section">
-            <div class="container">
-                <div class="row">
-                    <div class="col-md-9 cart">
-                        <div class="title">
-                            <div class="row">
-                                <div class="col"><h4><b>Shopping Cart</b></h4></div>
-                                <div class="col align-self-center text-right text-muted">{{object.get_total_no_items}} items</div>
-                            </div>
-                        </div> 
-                        {% for product in object.products.all %}
-                        <div class="row border-top border-bottom">
-                            <div class="row main align-items-center">
-                                <div class="col"><img class="img-fluid" src="{{product.product.get_product_image_url}}"></div>
-                                <div class="col">
-                                    <div class="row text-muted">{{product.product.name|truncatechars:38}}</div>
-                                    {% comment %} <div class="row">short description</div> {% endcomment %}
-                                </div>
-                                <div class="col">
-                                    <a href="{% url 'shop:reduce-quantity-item' product.product.slug %}"> - </a>
-                                    <a href="" class="border">{{product.quantity}}</a>
-                                    <a href="{% url 'shop:add-to-cart' product.product.slug %}"> + </a>
-                                </div>
-                                <div class="col">Ksh. {{product.get_final_price|intcomma}}</div>
-                                <div class="col">Discount: Ksh. {{product.get_discount_item_price|intcomma}} 
-                                </div>
-                                <div class="col"><a href="{% url 'shop:remove-from-cart' product.product.slug %}"><span class="close">&#10005;</span></a></div>
-                            </div>
-                        </div> 
-                        {% endfor %}
-                        <div class="back-to-shop"><a href="{% url 'shop:home' %}">&leftarrow;<span class="text-muted">Back to shop</span></a></div>
-                    </div>
-                    <div class="col-md-3 summary">
-                        <div><h5><b>Summary</b></h5></div>
-                        <hr>
-                        <div class="row">
-                            <div class="col" style="padding-left:0;">ITEMS {{object.get_total_no_items}}</div>
-                        </div>
-                        <div class="row" style="border-top: 1px solid rgba(0,0,0,.1); padding: 2vh 0;">
-                            <div class="col">TOTAL PRICE</div>
-                            <div class="col text-right">Ksh. {{object.get_total_price|intcomma}}</div>
-                        </div>
-                        <a href="{% url 'shop:checkout' %}"><button class="btn">CHECKOUT</button></a>
-                    </div>
-                </div>
+   <div class="cart-section">
+      <div class="container">
+         <div class="row">
+            <div class="col-md-9 cart">
+               <div class="title">
+                  <div class="row">
+                     <div class="col">
+                        <h4><b>Shopping Cart</b></h4>
+                     </div>
+                     <div class="col align-self-center text-right text-muted">{{object.get_total_no_items}} items</div>
+                  </div>
+               </div>
+               {% for product in object.products.all %}
+               <div class="row border-top border-bottom">
+                  <div class="row main align-items-center">
+                     <div class="col"><img class="img-fluid" src="{{product.product.get_product_image_url}}"></div>
+                     <div class="col">
+                        <div class="row text-muted">{{product.product.name|truncatechars:38}}</div>
+                        {% comment %} 
+                        <div class="row">short description</div>
+                        {% endcomment %}
+                     </div>
+                     <div class="col">
+                        <a href="{% url 'shop:reduce-quantity-item' product.product.slug %}"> - </a>
+                        <a href="" class="border">{{product.quantity}}</a>
+                        <a href="{% url 'shop:add-to-cart' product.product.slug %}"> + </a>
+                     </div>
+                     <div class="col">Ksh. {{product.get_final_price|intcomma}}</div>
+                     <div class="col">Discount: Ksh. {{product.get_discount_item_price|intcomma}} 
+                     </div>
+                     <div class="col"><a href="{% url 'shop:remove-from-cart' product.product.slug %}"><span class="close">&#10005;</span></a></div>
+                  </div>
+               </div>
+               {% endfor %}
+               <div class="back-to-shop"><a href="{% url 'shop:home' %}" ><span class="">Back to shop</span></a></div>
             </div>
-        </div>
+            <div class="col-md-3 summary">
+               <div>
+                  <h5><b>Summary</b></h5>
+               </div>
+               <hr>
+               <div class="row">
+                  <div class="col" style="padding-left:0;">ITEMS {{object.get_total_no_items}}</div>
+               </div>
+               <div class="row" style="border-top: 1px solid rgba(0,0,0,.1); padding: 2vh 0;">
+                  <div class="col">TOTAL PRICE</div>
+                  <div class="col text-right">Ksh. {{object.get_total_price|intcomma}}</div>
+               </div>
+               <a href="{% url 'shop:checkout' %}"><button class="btn">CHECKOUT</button></a>
+            </div>
+         </div>
+      </div>
+   </div>
 </div>
 {% endblock content %}

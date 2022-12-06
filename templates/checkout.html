@@ -2,77 +2,76 @@
 {%load humanize%}
 {% block content %}
 <div id="checkout-page">
-    <div class="checkout-section">
-        <div class="container mt-5 px-5">
-            <div class="mb-4">
-                <h2>Confirm order</h2>
+   <div class="checkout-section">
+      <div class="container mt-5 px-5">
+         <div class="mb-4">
+            <h2>Confirm order</h2>
             <span>please confirm your order for processing and delivery.</span> 
-            </div>
-            <form  method="POST">
-                {% csrf_token %}
-                <div class="row">
-                    <div class="col-md-8">
-                        <div class="card p-3">
-                            <h6 class="text-uppercase">Name</h6>
-                            <div class="row">
-                                <div class="col-md-6">
-                                    <div class="inputbox mt-3 mr-2"> {{form.first_name}}
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                     <div class="d-flex flex-row">
-                                         <div class="inputbox mt-3 mr-2"> {{form.last_name}} </div>
-                                     </div>
-                                </div>
-                            </div>
-                            <div class="mt-4 mb-4">
-                                <h6 class="text-uppercase">CONTACTS</h6>
-                                <div class="row mt-3">
-                                    <div class="col-md-12">
-                                        <div class="inputbox mt-3 mr-2"> {{form.phone_number}} </div>
-                                    </div>
-                                </div>
-                                <div class="row mt-2">
-                                    <div class="col-md-12">
-                                        <div class="inputbox mt-3 mr-2"> {{form.email_address}} </div>
-                                    </div>
-                                </div>
-                            </div>
-        
-                            <div class="mt-4 mb-4">
-                                <h6 class="text-uppercase">Delivery location</h6>
-                                <div class="row mt-2">
-                                    <div class="col-md-12">
-                                        <div class="inputbox mt-3 mr-2"> {{form.delivery_address}}</div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="">
-                                <div class="col-md-12">
-                                    <div class="inputbox mt-1 mr-2"> {{form.captcha}}</div>
-                                </div>
-                            </div>
-                                <div class="mt-4 mb-4  justify-content-between">
-                                    <button  class="btn btn-success px-5" type='submit'><i class="fa fa-circle-check"></i> CONFIRM ORDER</button>
-                            </div>
-                        </div> 
-                    </div>
-            </form>
-            <div class="col-md-4">
-                <div class="card card-blue p-3 text-white mb-3">
-                   <span>Total Checkout Amount</span>
-                    <div class="d-flex flex-row align-items-end mb-3">
-                        <h1 class="mb-0 yellow">Ksh. {{object.get_total_price|intcomma}}</h1>
-                    </div>
-                    <span><b>Note:</b> Does not include delivery charges</span>
-                    <a href="#" class="yellow decoration">Delivery charges are fixed based on a specific location</a>
-                    <div class="hightlight">
-                        <span>4 to 5 hours delivery within Nairobi. 1 to 3 days delivery outside Nairobi.</span>
-                    </div>  
-                </div>  
-            </div>
-        </div>
+         </div>
+         <form  method="POST">
+            {% csrf_token %}
+            <div class="row">
+               <div class="col-md-8">
+                  <div class="card p-3">
+                     <h6 class="text-uppercase">Name</h6>
+                     <div class="row">
+                        <div class="col-md-6">
+                           <div class="inputbox mt-3 mr-2"> {{form.first_name}}
+                           </div>
+                        </div>
+                        <div class="col-md-6">
+                           <div class="d-flex flex-row">
+                              <div class="inputbox mt-3 mr-2"> {{form.last_name}} </div>
+                           </div>
+                        </div>
+                     </div>
+                     <div class="mt-4 mb-4">
+                        <h6 class="text-uppercase">CONTACTS</h6>
+                        <div class="row mt-3">
+                           <div class="col-md-12">
+                              <div class="inputbox mt-3 mr-2"> {{form.phone_number}} </div>
+                           </div>
+                        </div>
+                        <div class="row mt-2">
+                           <div class="col-md-12">
+                              <div class="inputbox mt-3 mr-2"> {{form.email_address}} </div>
+                           </div>
+                        </div>
+                     </div>
+                     <div class="mt-4 mb-4">
+                        <h6 class="text-uppercase">Delivery location</h6>
+                        <div class="row mt-2">
+                           <div class="col-md-12">
+                              <div class="inputbox mt-3 mr-2"> {{form.delivery_address}}</div>
+                           </div>
+                        </div>
+                     </div>
+                     <div class="">
+                        <div class="col-md-12">
+                           <div class="inputbox mt-1 mr-2"> {{form.captcha}}</div>
+                        </div>
+                     </div>
+                     <div class="mt-4 mb-4  justify-content-between">
+                        <button  class="btn btn-success px-5" type='submit'><i class="fa fa-circle-check"></i> CONFIRM ORDER</button>
+                     </div>
+                  </div>
+               </div>
+         </form>
+         <div class="col-md-4">
+         <div class="card card-blue p-3 text-white mb-3">
+         <span>Total Checkout Amount</span>
+         <div class="d-flex flex-row align-items-end mb-3">
+         <h1 class="mb-0 yellow">Ksh. {{object.get_total_price|intcomma}}</h1>
+         </div>
+         <span><b>Note:</b> Does not include delivery charges</span>
+         <a href="#" class="yellow decoration">Delivery charges are fixed based on a specific location</a>
+         <div class="hightlight">
+         <span>4 to 5 hours delivery within Nairobi. 1 to 3 days delivery outside Nairobi.</span>
+         </div>  
+         </div>  
+         </div>
+         </div>
       </div>
-    </div>
+   </div>
 </div>
 {% endblock content %}
