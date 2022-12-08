@@ -1,6 +1,4 @@
-from django.utils import timezone
-from datetime import date
-from .models import CancelledOrder, OrderItem, EmailDispatch
+from .models import OrderItem, EmailDispatch
 from django.conf import settings
 from django.core.mail import send_mail as sm
 from django.template.loader import render_to_string

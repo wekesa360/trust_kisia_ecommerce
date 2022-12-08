@@ -28,7 +28,7 @@ class CheckoutForm(forms.Form):
     delivery_address = forms.ModelChoiceField(queryset=DeliveryCharges.objects.all(), widget=forms.Select(attrs={
         'id': 'address'
     }))    
-    # captcha = ReCaptchaField(widget=ReCaptchaV2Checkbox)
+    captcha = ReCaptchaField(widget=ReCaptchaV2Checkbox)
     
     
     
